@@ -1,5 +1,6 @@
 (defproject viebel/gadjett "0.1.6"
   :description "Inspector tools for clojurescript"
+  :url "https://github.com/viebel/gadjett"
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "1.7.228"]
                  [im.chit/purnam "0.5.2"]]
