@@ -12,6 +12,6 @@
                :dev {
                 :source-paths ["src"]
                 :compiler {
-                           :output-to "public/clojurescript/dev/main.js"
+                           :output-to "resources/main.js"
                            :optimizations :simple
                            :pretty-print true}}}})

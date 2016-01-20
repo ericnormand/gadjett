@@ -3,8 +3,7 @@
 
 (defmacro dbg[x]
   `(let [x# ~x]
-     (print (str '~x ": "))
-     (cljs.pprint/pprint x#)
+     (print (str '~x ": " x#))
      x#))
 
 (defmacro breakpoint []
