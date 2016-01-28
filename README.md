@@ -3,6 +3,9 @@
 Here are a set of tools that leverage clojure macro power to make your `clj[s]` coding experience more effective.
 
 ## API
+Add this to your `project.clj`:
+
+[![Clojars Project](https://img.shields.io/clojars/v/viebel/gadjett.svg)](https://clojars.org/viebel/gadjett)
 
 In order to use the `gadjett` macros, you have to include the `gadjett` namespace like this:
 
