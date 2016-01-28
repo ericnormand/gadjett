@@ -56,9 +56,9 @@ rlwrap lein run -m clojure.main script/figwheel.clj
 open your browser to http://localhost:2512 (you can configure the port, by editing `script/figwheel.clj`).
 
 Now, you are inside a live reload REPL (Hourra Figwheel).
-At the begining, you are inside `gadjett.test` namespace.
-Give it a try
+Give it a try!
 ```clojure
+(in-ns 'gadjett.test)
 (foo 5); 5 - Nothing special
 (dotimes [i 50] (foo 5)); Assert failed: gadjett.test/foo was called too much: 50 times over the last 1000 msec.
 (dotimes [i 25] (bar 5)); Assert failed: gadjett.test/foo was called too much: 50 times over the last 1000 msec.
