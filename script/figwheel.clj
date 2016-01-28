@@ -12,6 +12,7 @@
                 :asset-path "js"
                 :output-to "resources/public/js/main.js"
                 :output-dir "resources/public/js"
+                ;:elide-asserts true
                 :verbose true}}]})
 
 (ra/cljs-repl)

@@ -23,7 +23,17 @@ Use `deftrack` instead of `defn` and you will get an exception if the function i
 
 ```clojure
   (deftrack foo [])
-  (dotimes [i 101] (foo))
+  (dotimes [i 101] (foo)); it throws a js error
+```
+
+And it works also for multi-arity functions
+
+
+```clojure
+  (deftrack foo-multi
+    ([] 17)
+    ([x] x))
+  (dotimes [i 101] (foo)); it throws a js error
 ```
 
 **Bonus**: No performance hit in production => the code added by `deftrack` disappears when you use `:elide-asserts true`.
@@ -31,12 +41,15 @@ Use `deftrack` instead of `defn` and you will get an exception if the function i
 ### deftry
 
 ### dbg
-This macro displays an expression and its evaluation + it returns the evaluation. 
+This macro prints in the browser console an expression and its evaluation + it returns the evaluation. 
+You can wrap any s-expression into `dbg` and the code will behave the same.
 
 ```clojure
-(dbg (map inc [1 2 3]))
+(let [x (dbg (map inc [1 2 3]))
+     (count x)]) ; will return 3 + print in the console: "(map inc [1 2 3]): (2 3 4)"
 ```
 
+**Bonus**: No negative impact in production => the code added by `dbg` disappears when you use `:elide-asserts true`.
 ### breakpoint
 This macro inserts a breakpoint. 
 
@@ -46,7 +59,7 @@ This macro inserts a breakpoint.
   (* x x))
 ```
 
-## Contribution
+## Test Gadjett
 
 Make sure `rlwrap` is installed.
 ```bash
