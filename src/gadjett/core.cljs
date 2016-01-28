@@ -16,9 +16,16 @@
   (swap! history add-event func-name (.valueOf (new js/Date)))
   (<= (count (get @history func-name)) max-function-calls))
 
-(defn the-history
-  ([k] (clj->js [(count (get @history k)) (get @history k)]))
-  ([] (clj->js @history)))
+(defn- sort-history "returns the history sorted by number of function calls"
+  [hist]
+  (->> hist
+      (sort-by (comp count second))
+      reverse))
 
- 
+(defn the-history "returns the history as an array, sorted by number of function calls"
+  ([k] (get @history k))
+  ([] (sort-history @history)))
+
+(defn function-call-err-msg [func-name]
+  (str func-name " was called too much: " max-function-calls " times over the last " timeslot-function-calls-msec " msec."))
 

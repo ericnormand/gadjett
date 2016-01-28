@@ -15,7 +15,7 @@
     (let [[func-name args & body] definition]
       `(let [full-name#  ~(str (:name (cljs.analyzer/resolve-var &env func-name)))]
          (defn ~func-name ~args
-           (assert (record-function-call full-name#) (str full-name# " called too often!"))
+           (assert (record-function-call full-name#) (function-call-err-msg full-name#))
            ~@body)))
 
     (let [[func-name & definitions] definition]
@@ -23,6 +23,6 @@
          (defn ~func-name ~@(map
                               (fn [[args & body]]
                                 `(~args
-                                   (assert (record-function-call full-name#) (str full-name# " called too often!"))
+                                   (assert (record-function-call full-name#) (function-call-err-msg full-name#))
                                    ~@body))
                               definitions))))))
