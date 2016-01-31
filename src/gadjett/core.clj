@@ -16,14 +16,13 @@
     (if (vector? (second definition))
       (let [[func-name args & body] definition]
         `(defn ~func-name ~args
-           (assert (record-function-call ~full-name) (function-call-err-msg ~full-name))
+           (assert (record-function-call ~full-name (~'js* "arguments")) (function-call-err-msg ~full-name (~'js* "arguments")))
            ~@body))
 
       (let [[func-name & definitions] definition]
-        (let [full-name (str (:name (cljs.analyzer/resolve-var &env func-name)))]
-          `(defn ~func-name ~@(map
-                                (fn [[args & body]]
-                                  `(~args
-                                     (assert (record-function-call ~full-name) (function-call-err-msg ~full-name))
-                                     ~@body))
-                                definitions)))))))
+        `(defn ~func-name ~@(map
+                              (fn [[args & body]]
+                                `(~args
+                                   (assert (record-function-call ~full-name (~'js* "arguments")) (function-call-err-msg ~full-name (~'js* "arguments")))
+                                   ~@body))
+                              definitions))))))
