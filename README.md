@@ -1,9 +1,9 @@
 # gadjett
 
-Here are a set of tools that leverage clojure macro power to make your `clj[s]` coding experience more effective.
+Here are a set of tools that leverage clojure macro power to make your `cljs` coding experience more effective.
 
 ## API
-Add this to your `project.clj`:
+Add this to your `project.clj` dependencies:
 
 [![Clojars Project](https://img.shields.io/clojars/v/viebel/gadjett.svg)](https://clojars.org/viebel/gadjett)
 
@@ -17,13 +17,35 @@ In order to use the `gadjett` macros, you have to include the `gadjett` namespac
 
 The reason that you need the two statements is because `deftrack` macro - defined in `core.clj` - calls functions - defined in `core.cljs`.
 
-### deftrack
-This macro will proactively solves (part of) your performance issues, by ensuring that no function is called too often.
-Use `deftrack` instead of `defn` and you will get an exception if the function is called more that 100 times per second.
+### settings
+
+`Gadjett` comes with a couple of default settings:
+```clojure
+ {
+   :max-function-calls 50; max number of function calls of the same function in a timeslot defined by :timeslot-function-calls-msec
+   :max-function-calls-with-args 10; max number of function calls of the same function with the same arguments, in a timeslot defined by :timeslot-function-calls-msec
+   :timeslot-function-calls-msec 1000; timeslot for max function calls
+   :compact-max-elements-in-seq 5; max number of elements when an sequence is compacted
+   :compact-max-chars-in-str 10; max number of characters when a string is compacted
+}
+```
+
+You can override the default settings, using `gadjett.core.settings!`:
 
 ```clojure
-  (deftrack foo [])
-  (dotimes [i 101] (foo)); it throws a js error
+(gadjett.core.settings! :max-function-calls 17)
+```
+### deftrack
+This macro will proactively solves (part of) your performance issues, by ensuring that no function is called too often.
+Use `deftrack` instead of `defn` and you will get an exception if the function is called either:
+
+1. more that 50 (configurable number) times per second.
+2. more than 10 times per second with the same arguments.
+
+```clojure
+  (deftrack foo [x])
+  (dotimes [i 51] (foo (rand))); it throws a js error
+  (dotimes [i 11] (foo 19)); it throws a js error
 ```
 
 And it works also for multi-arity functions
