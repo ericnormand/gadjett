@@ -46,6 +46,7 @@
   [func-name (compact args)])
 
 (defn record-function-call [func-name args]
+  (seq (js* "Array.prototype.slice.call(arguments)"))
   (let [func-and-args (func-and-args func-name args)]
     (swap! history add-event func-name (.valueOf (new js/Date)))
     (swap! history add-event func-and-args (.valueOf (new js/Date)))

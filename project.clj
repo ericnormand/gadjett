@@ -5,11 +5,22 @@
                  [org.clojure/clojurescript "1.7.228"]
                  [figwheel-sidecar "0.5.0" :scope "test"]]
   
-  :plugins [[lein-cljsbuild "1.1.2"]]
+  :plugins [[lein-figwheel "0.5.0-6"]
+            [lein-cljsbuild "1.1.2"]]
+  :figwheel {:server-port 2512}
   :source-paths ["src"]
   :cljsbuild {
               :builds
               {
+               :figwheel {
+                          :figwheel true
+                          :source-paths ["src"]
+                          :compiler {:main "gadjett.test"
+                                     :asset-path "js"
+                                     :output-to "resources/public/js/main.js"
+                                     :output-dir "resources/public/js"
+                                     ;:elide-asserts true
+                                     :verbose true}}
                :dev {
                 :source-paths ["src"]
                 :compiler {

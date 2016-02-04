@@ -86,7 +86,7 @@ This macro inserts a breakpoint.
 Make sure `rlwrap` is installed.
 ```bash
 mkdir -p resources/public/js
-rlwrap lein run -m clojure.main script/figwheel.clj
+rlwrap lein figwheel
 ```
 open your browser to http://localhost:2512 (you can configure the port, by editing `script/figwheel.clj`).
 
