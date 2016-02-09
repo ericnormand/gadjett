@@ -1,5 +1,6 @@
 (ns gadjett.test
-  (:require [gadjett.core :as g :refer-macros [deftrack breakpoint dbg defprint]]))
+  (:require [gadjett.jipper :as jipper]
+            [gadjett.core :as g :refer-macros [deftrack breakpoint dbg defprint]]))
 
 (defprint footprint [x] (* x x))
 (defprint blue-print [& args] (first args))
