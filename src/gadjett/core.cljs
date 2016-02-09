@@ -39,7 +39,6 @@
       (take-while #(> % (- timestamp-msec timeslot)) events)
       (cons timestamp-msec))))
 
-clojure.template/dotemplate
 (defn- add-event [history func-name timestamp-msec]
   (update history func-name (partial add-event-and-filter timestamp-msec)))
 

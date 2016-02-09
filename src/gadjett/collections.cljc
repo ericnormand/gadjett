@@ -1,5 +1,6 @@
 (ns gadjett.collections
   (:require [clojure.set]
+            [clojure.zip :as zip]
             [clojure.string :as string]))
 
 
@@ -473,16 +474,25 @@
     (let [switch (reductions not= true (map pred? coll (rest coll)))] 
       (map (partial map first) (partition-by second (map list coll switch)))))
 
-;============== Aliases for legacy reasons =============
 
-(def interpolate-linear 
-  interpolate-linear-x)
+(defn seqify
+  "Ensure `s` is a sequence: if `s` is a sequence returns it; otherwise returns (s)"
+  [s]
+  (if (seq? s) s (list s)))
 
-(def linear 
-  linear-x)
+(defn- loc-replace-with-list [match [replacement & values] loc]
+  (if (= (zip/node loc) match)
+    (as-> loc $
+      (zip/replace $ replacement)
+      (reduce (fn [agg v] (zip/insert-right agg v)) $ (reverse values)))
+    loc))
 
-(def highest-below
-  highest-below-y)
+(defn replace-with-list
+  "Recursively transforms `form` by replacing `match` with `values`."
+  [match values form]
+  (let [the-values (seqify values)]
+    (loop [loc (zip/seq-zip form)]
+      (if (zip/end? loc)
+        (zip/root loc)
+        (recur (zip/next (loc-replace-with-list match the-values loc)))))))
 
-(def lowest-above
-  lowest-above-y)

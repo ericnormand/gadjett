@@ -2,9 +2,14 @@
   :description "Inspector tools for clojurescript"
   :url "https://github.com/viebel/gadjett"
   :dependencies [[org.clojure/clojure "1.7.0"]
+                 [midje "1.8.3"]
+                 [org.clojure/test.check "0.9.0"]
+                 [com.velisco/herbert "0.6.11"]
                  [org.clojure/clojurescript "1.7.228"]
                  [figwheel-sidecar "0.5.0" :scope "test"]]
   
+  :profiles {:dev {:plugins [[lein-midje "3.2"]]}}
+
   :plugins [[lein-figwheel "0.5.0-6"]
             [lein-cljsbuild "1.1.2"]]
   :figwheel {:server-port 2512}

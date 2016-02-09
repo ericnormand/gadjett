@@ -81,7 +81,7 @@ This macro inserts a breakpoint.
   (* x x))
 ```
 
-## Test Gadjett
+## Try Gadjett
 
 Make sure `rlwrap` is installed.
 ```bash
@@ -98,4 +98,11 @@ Give it a try!
 (dotimes [i 50] (foo 5)); Assert failed: gadjett.test/foo was called too much: 50 times over the last 1000 msec.
 (dotimes [i 25] (bar 5)); Assert failed: gadjett.test/foo was called too much: 50 times over the last 1000 msec.
 (g/the-history); you get the history of all the function calls
+```
+
+### Automatic tests
+```bash
+lein repl
+user=> (use 'midje.repl)
+user=> (autotest)
 ```
