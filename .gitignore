@@ -1,5 +1,8 @@
 pom.xml
 pom.xml.*
+.lein-*
 target/
 public/
 figwheel_server.log
+.idea/
+*.iml
