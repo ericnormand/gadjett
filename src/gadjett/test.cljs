@@ -1,7 +1,7 @@
 (ns gadjett.test
-  (:require [gadjett.jipper :as jipper]
-            [gadjett.core :as g :refer-macros [deftrack breakpoint dbg defprint]]))
+  (:require [gadjett.core :as g :refer-macros [log-with-msg deflog deftrack breakpoint dbg defprint]]))
 
+(deflog hoora [x] (log (* x x)))
 (defprint footprint [x] (* x x))
 (defprint blue-print [& args] (first args))
 (deftrack foo [x] x)
@@ -16,3 +16,6 @@
 
 (defn test-dbg []
   (dbg (map inc [1 2 3])))
+
+
+(+ 1 2)

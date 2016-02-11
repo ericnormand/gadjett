@@ -480,19 +480,48 @@
   [s]
   (if (seq? s) s (list s)))
 
-(defn- loc-replace-with-list [match [replacement & values] loc]
-  (if (= (zip/node loc) match)
+(defn edn-zip [root]
+  (zip/zipper
+
+    ; branch? is a fn that, given a node, returns true if can have
+    ; children, even if it currently doesn't.
+    #(or (vector? %) (map? %) (seq? %))
+
+    ; children is a fn that, given a branch node, returns a seq of its
+    ; children.
+    (fn [node]
+      (cond
+        (vector? node) (vec node)
+        (map? node)    (vec node)
+        (seq? node)    (seq node)))
+
+    ; make-node is a fn that, given an existing node and a seq of
+    ; children, returns a new branch node with the supplied children.
+    (fn [node children]
+      (->
+        (cond
+          (vector? node) (vec children)
+          (map? node)    (into {} children)
+          (seq? node)    children)
+        (with-meta (meta node))))
+
+    ; root is the root node.
+    root))
+
+(defn- loc-my-replace [smap loc]
+  (if-let [[_ [replacement & values]] (find smap (zip/node loc))]
     (as-> loc $
       (zip/replace $ replacement)
       (reduce (fn [agg v] (zip/insert-right agg v)) $ (reverse values)))
     loc))
 
-(defn replace-with-list
-  "Recursively transforms `form` by replacing `match` with `values`."
-  [match values form]
-  (let [the-values (seqify values)]
-    (loop [loc (zip/seq-zip form)]
+(defn my-replace
+  "Recursively transforms `form` by replacing keys in `smap` with their
+  values, spliced.  Like clojure.walk/prewalk-replace but supports list `in values`."
+  [smap form]
+  (let [the-smap (map-object seqify smap)]
+    (loop [loc (edn-zip form)]
       (if (zip/end? loc)
         (zip/root loc)
-        (recur (zip/next (loc-replace-with-list match the-values loc)))))))
+        (recur (zip/next (loc-my-replace the-smap loc)))))))
 

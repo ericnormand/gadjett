@@ -306,22 +306,41 @@
        )
 
 (tabular 
-  (fact "replace-with-list with a single value"
-      (replace-with-list ?match ?values ?form) => ?res)
-      ?match ?values ?form ?res
-      'a 'b '() '()
-      'a 'b '(xx) '(xx)
-      'a 'b '(a) '(b)
-      'a 'b '(a '()) '(b '())
-      'aaa 'AAA '(aaa aa bb (a aaa (bb aaa))) '(AAA aa bb (a AAA (bb AAA))))
+  (fact "my-replace with a single value"
+      (my-replace ?smap ?form) => ?res)
+      ?smap ?form ?res
+      '{a b} '() '()
+      '{a b} '(xx) '(xx)
+      '{a b} '(a) '(b)
+      '{a b} '(a a (a)) '(b b (b))
+      '{a b} '(a ()) '(b ())
+      '{a b} '(a [a a]) '(b [b b])
+      '{aaa AAA} '(aaa aa bb (a aaa (bb aaa))) '(AAA aa bb (a AAA (bb AAA))))
 
 (tabular
-  (fact "replace-with-list with a several values"
-      (replace-with-list ?match ?values ?form) => ?res)
-      ?match ?values ?form ?res
-      'a '(b c) '() '()
-      'a '(b) '(xx) '(xx)
-      'a '(b c) '(a) '(b c)
-      'a '(b c) '(a '()) '(b c '())
-      'aaa '(AAA BB CC) '(aaa aa bb (a aaa (bb aaa))) '(AAA BB CC aa bb (a AAA BB CC (bb AAA BB CC))))
+  (fact "my-replace with a list"
+      (my-replace ?smap ?form) => ?res)
+      ?smap ?form ?res
+      '{a (b c)} '() '()
+      '{a (b)} '(xx) '(xx)
+      '{a (b)} '(a) '(b)
+      '{a (b c)} '(a) '(b c)
+      '{a (b c)} '(a ()) '(b c ())
+      '{aaa (AAA BB CC)} '(aaa aa bb (a aaa (bb aaa))) '(AAA BB CC aa bb (a AAA BB CC (bb AAA BB CC))))
 
+(tabular
+  (fact "my-replace with a list and several replacements"
+      (my-replace ?smap ?form) => ?res)
+      ?smap ?form ?res
+      '{a (b x) c (d e)} '(a kk c (c zz)) '(b x kk d e (d e zz))
+      '{a b b (d e)} '(a kk b (b zz)) '(b kk d e (d e zz))
+  )
+
+(tabular 
+  (fact "seqify" (seqify ?in) => ?out)
+  ?in ?out
+  '() '()
+  '(nil) '(nil)
+  'aa '(aa)
+  '(aa) '(aa)
+  '(aa bb) '(aa bb))

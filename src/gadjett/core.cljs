@@ -64,7 +64,7 @@
   ([] (sort-history @history)))
 
 (defn str-history-key "returns a string with the key and the number of function calls that exceeded the max."
-  [func-name args]
+    [func-name args]
   (cond
     (> (count (get @history (func-and-args func-name args))) (:max-function-calls-with-args settings))
       (str (:max-function-calls-with-args settings) " times with this arguments: " (compact args) ".")
@@ -75,3 +75,12 @@
 (defn function-call-err-msg [func-name args]
   (str func-name " was called too much over the last " (:timeslot-function-calls-msec settings)" msec: "
        (str-history-key func-name args)))
+
+
+
+(+ 1 2)
+
+(js/alert "das")
+
+
+
