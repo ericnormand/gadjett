@@ -5,13 +5,12 @@
                  [org.clojure/test.check "0.9.0"]
                  [com.velisco/herbert "0.6.11"]
                  [org.clojure/clojurescript "1.7.228"]
-                 [figwheel-sidecar "0.5.0"]]
-  :profiles {:dev {:dependencies [[midje "1.8.3"]]
-                   :plugins [[lein-midje "3.2"]]}}
-
-  :plugins [[lein-cljsbuild "1.1.2"]]
+                 [figwheel-sidecar "0.5.0"]
+                 [midje "1.8.3"]]
+  :plugins [[lein-cljsbuild "1.1.2"]
+            [lein-midje "3.2"]]
   :figwheel {:server-port 2512}
-  :source-paths ["src"]
+  :source-paths ["src" "script"]
   :cljsbuild {
               :builds
               {
