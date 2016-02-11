@@ -1,4 +1,4 @@
-# gadjett
+# gadjett [![Build Status](https://travis-ci.org/viebel/gadjett.svg?branch=master)](https://travis-ci.org/viebel/gadjett)
 
 Here are a set of tools that leverage clojure macro power to make your `cljs` coding experience more effective.
 
