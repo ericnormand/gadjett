@@ -482,21 +482,13 @@
 
 (defn edn-zip [root]
   (zip/zipper
-
-    ; branch? is a fn that, given a node, returns true if can have
-    ; children, even if it currently doesn't.
     #(or (vector? %) (map? %) (seq? %))
-
-    ; children is a fn that, given a branch node, returns a seq of its
-    ; children.
     (fn [node]
       (cond
         (vector? node) (vec node)
         (map? node)    (vec node)
         (seq? node)    (seq node)))
 
-    ; make-node is a fn that, given an existing node and a seq of
-    ; children, returns a new branch node with the supplied children.
     (fn [node children]
       (->
         (cond
@@ -504,8 +496,6 @@
           (map? node)    (into {} children)
           (seq? node)    children)
         (with-meta (meta node))))
-
-    ; root is the root node.
     root))
 
 (defn- loc-my-replace [smap loc]
@@ -517,11 +507,11 @@
 
 (defn my-replace
   "Recursively transforms `form` by replacing keys in `smap` with their
-  values, spliced.  Like clojure.walk/prewalk-replace but supports list `in values`."
+  values, spliced. The values in `smap` must be sequences. Like clojure.walk/prewalk-replace but supports list `in values`."
   [smap form]
-  (let [the-smap (map-object seqify smap)]
-    (loop [loc (edn-zip form)]
-      (if (zip/end? loc)
-        (zip/root loc)
-        (recur (zip/next (loc-my-replace the-smap loc)))))))
+  {:pre [(every? seq? (vals smap))]}
+  (loop [loc (edn-zip form)]
+    (if (zip/end? loc)
+      (zip/root loc)
+      (recur (zip/next (loc-my-replace smap loc))))))
 
