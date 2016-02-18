@@ -1,12 +1,13 @@
 (ns gadjett.collections
   (:require [clojure.set]
             [clojure.zip :as zip]
+            #?(:cljs [cljs.core.async :refer [chan]])
             [clojure.string :as string]))
 
 
 #?(:cljs 
-(defn to-regular-array[arr]
-  (IndexedSeq. arr 0)))
+    (defn to-regular-array[arr]
+      (IndexedSeq. arr 0)))
 
 
 (defn =without-keys? [obj-a obj-b keys-list]
@@ -514,4 +515,25 @@
     (if (zip/end? loc)
       (zip/root loc)
       (recur (zip/next (loc-my-replace smap loc))))))
+
+#?(:cljs (defonce chan-type (type (chan))))
+#?(:cljs
+    (defn compact "compact an expression by taking only the first `max-elements-in-coll` from collections and first `max-chars-in-str` from strings. It works recursively. It is useful for logging and reporting."
+      [x & {:keys [max-elements-in-coll max-chars-in-str] :or {max-elements-in-coll 10 max-chars-in-str 20} :as args}]
+      (cond
+        (= x true) x
+        (= x false) x
+        (nil? x) x
+        (keyword? x) x
+        (number? x) x
+        (string? x) (subs x 0 max-chars-in-str)
+        (map? x) (take-from-map max-elements-in-coll (map-object #(compact % args) x))
+        (seqable? x) (take max-elements-in-coll (map #(compact % args) x))
+        (array? x) (str "***[" (type x) "]***")
+        (= chan-type (type x)) "channel"
+        (= js/Function (type x)) "lambda()"
+        (instance? js/Object x) (str "***[" (subs (str (type x)) 0 15) "]***")
+        :else (str "***[" (type x) "]***")))
+    )
+
 
