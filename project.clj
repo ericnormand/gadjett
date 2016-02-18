@@ -1,4 +1,4 @@
-(defproject viebel/gadjett "0.1.8"
+(defproject viebel/gadjett "0.1.9"
   :description "Inspector tools for clojurescript"
   :url "https://github.com/viebel/gadjett"
   :dependencies [[org.clojure/clojure "1.7.0"]
@@ -8,6 +8,7 @@
                  [figwheel-sidecar "0.5.0"]
                  [midje "1.8.3"]]
   :plugins [[lein-cljsbuild "1.1.2"]
+            [lein-figwheel "0.5.0-6"]
             [lein-midje "3.2"]]
   :figwheel {:server-port 2512}
   :source-paths ["src" "script"]

@@ -37,15 +37,11 @@ You can override the default settings, using `gadjett.core.settings!`:
 ```
 ### deftrack
 This macro will proactively solves (part of) your performance issues, by ensuring that no function is called too often.
-Use `deftrack` instead of `defn` and you will get an exception if the function is called either:
-
-1. more that 50 (configurable number) times per second.
-2. more than 10 times per second with the same arguments.
+Use `deftrack` instead of `defn` and you will get an exception if the function is called more that 50 (configurable number) times per second.
 
 ```clojure
-  (deftrack foo [x])
-  (dotimes [i 51] (foo (rand))); it throws a js error
-  (dotimes [i 11] (foo 19)); it throws a js error
+  (deftrack foo [])
+  (dotimes [i 51] (foo)); it throws a js error
 ```
 
 And it works also for multi-arity functions
