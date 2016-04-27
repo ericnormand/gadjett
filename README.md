@@ -33,7 +33,7 @@ The reason that you need the two statements is because `deftrack` macro - define
 You can override the default settings, using `gadjett.core.settings!`:
 
 ```clojure
-(gadjett.core.settings! :max-function-calls 17)
+(gadjett.core/settings! :max-function-calls 17)
 ```
 ### deftrack
 This macro will proactively solves (part of) your performance issues, by ensuring that no function is called too often.
