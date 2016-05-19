@@ -1,7 +1,6 @@
 (ns gadjett.collections
   (:require [clojure.set]
-            [clojure.zip :as zip]
-            [clojure.string :as string]))
+            [clojure.zip :as zip]))
 
 
 #?(:cljs 
@@ -355,8 +354,6 @@
         [x y] ((intersection-point-func axes) a1 b1 a2 b2)]
     [x y]))
 
-(defn strings-to-keywords [strings]
-  (map keyword (string/split strings #"\s+")))
 
 (defn select-keys-in-order
   "Thanks [Jay Fields](http://blog.jayfields.com/2011/01/clojure-select-keys-select-values-and.html)"
