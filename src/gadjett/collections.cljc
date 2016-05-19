@@ -525,7 +525,6 @@
         (map? x) (take-from-map max-elements-in-coll (map-object #(compact % args) x))
         (seqable? x) (take max-elements-in-coll (map #(compact % args) x))
         (array? x) (str "***[" (type x) "]***")
-        (= chan-type (type x)) "channel"
         (= js/Function (type x)) "lambda()"
         (instance? js/Object x) (str "***[" (subs (str (type x)) 0 15) "]***")
         :else (str "***[" (type x) "]***")))
