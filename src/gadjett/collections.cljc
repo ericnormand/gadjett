@@ -1,7 +1,6 @@
 (ns gadjett.collections
   (:require [clojure.set]
             [clojure.zip :as zip]
-            #?(:cljs [cljs.core.async :refer [chan]])
             [clojure.string :as string]))
 
 
@@ -516,7 +515,6 @@
       (zip/root loc)
       (recur (zip/next (loc-my-replace smap loc))))))
 
-#?(:cljs (defonce chan-type (type (chan))))
 #?(:cljs
     (defn compact "compact an expression by taking only the first `max-elements-in-coll` from collections and first `max-chars-in-str` from strings. It works recursively. It is useful for logging and reporting."
       [x & {:keys [max-elements-in-coll max-chars-in-str] :or {max-elements-in-coll 10 max-chars-in-str 20} :as args}]
