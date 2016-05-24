@@ -1,6 +1,5 @@
 (ns gadjett.core
   (:require 
-    [cljs.core.async :refer [chan]]
     [gadjett.collections :as collections]))
  
 (defonce history (atom {}))
@@ -13,8 +12,6 @@
 
 (defn settings! [& {:keys [] :as args}]
   (set! settings (merge settings args)))
-
-(defonce chan-type (type (chan)))
 
 (defn- add-event-and-filter [timestamp-msec events]
   (let [timeslot (:timeslot-function-calls-msec settings)]
