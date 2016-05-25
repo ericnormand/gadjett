@@ -5,7 +5,7 @@
 
 #?(:cljs 
     (defn to-regular-array[arr]
-      (IndexedSeq. arr 0)))
+      (IndexedSeq. arr 0 nil)))
 
 
 (defn =without-keys? [obj-a obj-b keys-list]
