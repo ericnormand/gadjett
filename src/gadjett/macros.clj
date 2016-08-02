@@ -10,8 +10,5 @@
   (cons
     `symbol-several
     (for [form forms]
-      `(str '~form " =>> " ~form "\n"))))
+      `(str '~form " => " ~form "\n"))))
     
-#_(defmacro disp [& forms]
-  (cons `str (for [form forms]
-               `(str (pr-str '~form) " => " (pr-str ~form)))))
