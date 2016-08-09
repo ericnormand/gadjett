@@ -1,7 +1,8 @@
 (ns gadjett.core
   (:require [cljs.analyzer]
+            [gadjett.core-fn :refer [record-function-call]]
             [gadjett.collections :as collections]))
-
+          
 (defmacro dbg[x]
   (when *assert*
   `(let [x# ~x]

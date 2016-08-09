@@ -1,4 +1,4 @@
-(ns gadjett.core
+(ns gadjett.core-fn
   (:require 
     [gadjett.collections :as collections]))
  
@@ -23,7 +23,8 @@
   (update history func-name (partial add-event-and-filter timestamp-msec)))
 
 (defn record-function-call [func-name args]
-  (swap! history add-event func-name (.valueOf (new js/Date)))
+  (swap! history add-event func-name #?(:cljs (.valueOf (new js/Date))
+                                        :clj (System/currentTimeMillis)))
   (<= (count (get @history func-name)) (:max-function-calls settings)))
 
 (defn- sort-history "returns the history sorted by number of function calls"
