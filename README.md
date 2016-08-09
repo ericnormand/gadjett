@@ -11,11 +11,8 @@ In order to use the `gadjett` macros, you have to include the `gadjett` namespac
 
 ```clojure
 (ns user
-  (:use-macros [gadjett.core :only [deftrack]])
-  (:require [gadjett.core :as g :include-macros true]))
+  (:require-macros [gadjett.core :only [deftrack]]))
 ```
-
-The reason that you need the two statements is because `deftrack` macro - defined in `core.clj` - calls functions - defined in `core.cljs`.
 
 ### settings
 
@@ -30,10 +27,10 @@ The reason that you need the two statements is because `deftrack` macro - define
 }
 ```
 
-You can override the default settings, using `gadjett.core.settings!`:
+You can override the default settings, using `gadjett.core-fn.settings!`:
 
 ```clojure
-(gadjett.core/settings! :max-function-calls 17)
+(gadjett.core-fn/settings! :max-function-calls 17)
 ```
 ### deftrack
 This macro will proactively solves (part of) your performance issues, by ensuring that no function is called too often.
