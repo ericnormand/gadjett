@@ -1,7 +1,6 @@
 (ns gadjett.check-collections
   (:use [gadjett.collections])
-  (:require  [miner.herbert :as h]
-            [miner.herbert.generators :as hg]
+  (:require [miner.herbert.generators :as hg]
             [clojure.test.check :as tc]
             [clojure.test.check.generators :as gen]
             [clojure.test.check.clojure-test :refer [defspec]]

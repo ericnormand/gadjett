@@ -1,11 +1,11 @@
-(defproject viebel/gadjett "0.1.13"
+(defproject viebel/gadjett "0.1.14"
   :description "Inspector tools for clojurescript"
   :url "https://github.com/viebel/gadjett"
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.8.40"]
+                 [org.clojure/clojurescript "1.9.93"]
                  [org.clojure/test.check "0.9.0"]
-                 [com.velisco/herbert "0.6.11"]
-                 [figwheel-sidecar "0.5.0"]
+                 [com.velisco/herbert "0.7.0"]
+                 [figwheel-sidecar "0.5.4-7"]
                  [midje "1.8.3"]]
   :plugins [[lein-cljsbuild "1.1.2"]
             [lein-figwheel "0.5.0-6"]
