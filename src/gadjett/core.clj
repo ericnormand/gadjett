@@ -6,7 +6,7 @@
 (defmacro dbg[x]
   (when *assert*
   `(let [x# ~x]
-     (print (str '~x ": " x#))
+     (println (str '~x ": " x#))
      x#)))
 
 (defmacro breakpoint []
