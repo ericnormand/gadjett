@@ -1,5 +1,6 @@
 (ns gadjett.collections
   (:require [clojure.set]
+            [clojure.string :refer [blank? join split-lines]]
             [clojure.zip :as zip]))
 
 
@@ -511,6 +512,22 @@
     (if (zip/end? loc)
       (zip/root loc)
       (recur (zip/next (loc-my-replace smap loc))))))
+
+(defn fix-blank-lines "removes blank lines from the begining and from the end (not from the middle"
+  [s]
+  (->> s
+    split-lines
+    (drop-while blank?)
+    reverse
+    (drop-while blank?)
+    reverse
+    (join "\n")))
+
+(defn remove-blank-lines [s]
+  (->> s
+    split-lines
+    (remove blank?)
+    (join "\n")))
 
 #?(:cljs
     (defn compact "compact an expression by taking only the first `max-elements-in-coll` from collections and first `max-chars-in-str` from strings. It works recursively. It is useful for logging and reporting."

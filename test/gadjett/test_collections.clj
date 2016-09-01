@@ -318,6 +318,27 @@
          '{a (b)} '{a b} '{b b}
          '{aaa (AAA BB CC)} '(aaa aa bb (a aaa (bb aaa))) '(AAA BB CC aa bb (a AAA BB CC (bb AAA BB CC))))
        (tabular
+         (fact "remove-blank-lines" 
+               (remove-blank-lines ?in) => ?out)
+         ?in ?out
+         "" ""
+         "  \n" ""
+         "  \t\n" ""
+         "   " ""
+         "   \t  " ""
+         "   \t   \naa\n  \nbb\n  " "aa\nbb")
+       (tabular
+         (fact "fix-blank-lines" 
+               (fix-blank-lines ?in) => ?out)
+         ?in ?out
+         "" ""
+         "  \n" ""
+         "  \t\n" ""
+         "   " ""
+         "   \t  " ""
+         "   \t   \naa\n  \nbb\n  " "aa\n  \nbb")
+      
+       (tabular
          (fact "seqify" (seqify ?in) => ?out)
          ?in ?out
          '() '()
