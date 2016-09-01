@@ -1,6 +1,6 @@
 (ns gadjett.core
   (:require [cljs.analyzer]
-            [gadjett.core-fn :refer [record-function-call]]
+            [gadjett.core-fn :refer [function-call-err-msg record-function-call]]
             [gadjett.collections :as collections]))
           
 (defmacro dbg[x]
