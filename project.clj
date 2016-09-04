@@ -23,7 +23,7 @@
                     [:div {:class "klipse"
                            :data-external-libs "https://raw.githubusercontent.com/viebel/gadjett/master/src/"}
                      "(ns test.gadjett
-                     (:require [gadjett.collections :refer [map-object]]))"]]]
+                     (:require [gadjett.collections :refer [unflatten-keys sequence->map =without-keys? dissoc-in intersection-point-func linear-equation mapify submap? intersection-point find-below-and-above-y linear-equation-func positions replace-keys filter-map vec->map assoc-cyclic highest-below-x linear-y linear-x-func recursive-vals subsequence edn-zip log-x-intersection-point interpolate-linear-y linear-y-func intersection-point-from-2-lines-points fix-blank-lines map-to-object deep-merge mean split-by-predicate-opt map-object-kv flatten-keys flatten-keys* map-to-object-with-index compactize-map lowest-above-x partition-between take-from-map sort-keys-by min-coll map-with-index map-object-with-key deep-merge* find-keys-with-value display-sequence range-till-end nearest-of-seq log-x-linear-y lowest-above-y branches-and-leaves remove-blank-lines select-vals log-x-linear-equation filter-branches calc-interpolated-values select-keys-in-order out-of-bound? map-2d-vec split-by-predicate seqify abs append-cyclic select-vals-in-order linear-x interpolate-linear-x map-2d-vec-kv max-and-min below-and-above-y highest-below-y index-of find-keys-with-values-in nearest-of-ss map-reverse-hierarchy map-object my-replace]]))"]]]
                   [:body]
                   [:append
                    [:link

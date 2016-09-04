@@ -14,9 +14,10 @@
 
 (defn vec->map
   "Converts a 2d vec to a hash-map.
-     E.g. 
-   
-   [[:a 1] [:b 2]] -> {:a 1 :b 2}
+
+~~~klipse
+   (vec->map [[:a 1] [:b 2]])
+~~~
    "
   [vec]
   (into {} vec))
@@ -25,16 +26,11 @@
   (map (fn[[k id]] [k (f id)]) m))
 
 (defn map-object
-  "Usage:
-
-      (map-object f m)
-
-  Returns a map with the same keys as `m` and with the values transformed by `f`.
+  "Returns a map with the same keys as `m` and with the values transformed by `f`.
 
 ~~~klipse
   (map-object #(* 100 %) {:a 1 :b 2 :c 3})
 ~~~
-
   "
   [f m]
   (vec->map (map-2d-vec f m)))
@@ -64,16 +60,11 @@
        (count x))))
 
 (defn sequence->map
-  "
-  Usage:
+  "Converts a sequence into a map where the keys are the indexes of the elements in the sequence.
 
-  (sequence->map s)
-
-  Converts a sequence into a map where the keys are the indexes of the elements in the sequence.
-
-  For instance: 
-
-  (sequence->map [10 20 30]) => {0 10 1 20 2 30}
+~~~klipse
+  (sequence->map [10 20 30])
+~~~
   "
   [s]
   (zipmap (range (count s)) s))
@@ -111,8 +102,7 @@
   (into {} (remove (comp nil? second) m)))
 
 (defn filter-map
-  "Run a function on the elements of a map and keep only those elements for which
-  the function returns true"
+  "Run a function on the elements of a map and keep only those elements for which the function returns true"
   [f m]
   (into {} (filter (comp f val) m)))
 
@@ -133,16 +123,10 @@
   (zipmap lst (map f lst)))
 
 (defn map-with-index 
-  "
-  Usage:
-
-      (map-with-index coll idx-key val-key)
-
-
-  Maps a sequence to a sequence of maps with index and value
-  For instance:
-  
-      (map-with-index [10 20 30] :idx :val) =>  '({:idx 0, :val 10} {:idx 1, :val 20} {:idx 2, :val 30}))
+  "Maps a sequence to a sequence of maps with index and value
+~~~klipse
+      (map-with-index [10 20 30] :idx :val)
+~~~
   "
   [s idx-key val-key]
   (map-indexed (fn [i v] {idx-key i val-key v}) s))
@@ -160,9 +144,7 @@
     (into {} (map-indexed #(vector %1 (f %2)) s)))
 
 (defn dissoc-in
-  "Dissociates an entry from a nested associative structure returning a new
-  nested structure. keys is a sequence of keys. Any empty maps that result
-  will not be present in the new structure."
+  "Dissociates an entry from a nested associative structure returning a new nested structure. keys is a sequence of keys. Any empty maps that result will not be present in the new structure."
   [m [k & ks :as keys]]
   (if ks
     (if-let [nextmap (get m k)]
@@ -173,9 +155,10 @@
       m)
     (dissoc m k)))
 
-(defn split-by-predicate 
-  "Splits a collection to items where the separator is a repetition of at least n elements that satisfy pred
-  inspired by: [this question](http://stackoverflow.com/a/23555616/813665)"
+(defn split-by-predicate
+  "Splits a collection to items where the separator is a repetition of at least n elements that satisfy pred.
+
+  Inspired by: [this question](http://stackoverflow.com/a/23555616/813665)"
 [coll pred n] 
   (let [part  (partition-by  pred coll)
         ppart (partition-by (fn [x] (and
@@ -183,7 +166,7 @@
                                       (every? pred x))) part)]
         (map #(apply concat %) ppart)))
 
-(defn positions 
+(defn positions
   "Receives a collection of lengths and returns a list of start and end positions"
 [coll-of-lengths maximal-value]
   (let [end-pos (reductions + coll-of-lengths)
@@ -191,10 +174,8 @@
     (map #(list (min maximal-value %1) (min maximal-value %2)) start-pos end-pos)))
 
 (defn submap?
-  
   "Checks if m1 is a submap of m2.
   Map m1 is a submap of m2 if all key/value pairs in m1 exist in m2"
-  
   [m1 m2]
   (= m1 (select-keys m2 (keys m1))))
 
@@ -271,12 +252,12 @@
   (case [x y]
     [:linear :linear] linear-x
     linear-x))
-                        
+
 (defn below-and-above-y [y [x1 y1] [x2 y2]]
   (when (or (< y1 y y2) (> y1 y y2)) [[x1 y1] [x2 y2]]))
 
 (defn find-below-and-above-y [m y]
-  (as-> 
+  (as->
     (map vec m) $
     (sort-by first $)
     (map (partial below-and-above-y y) $ (rest $))
@@ -294,19 +275,16 @@
     (apply min coll)))
 
 (defn interpolate-linear-x
-  "Usage:
+  "Returns the interpolated x for a given y acording to the select-func thats passed
 
-  (interpolate-linear-x m y :interpolate? interpolate? :axes axes :select-func select-func)
+- `:interpolate?` -  a predicate for deciding eather to calc th interpolation or not.
+-   `:axes` -  a map that defines what are the axes scales
+-   `:select-func` - what functionality to use if there are multiple interpolated values
 
-  returnes the interpolated x for a given y acording to the select-func thats passed
-
-  :interpolate? a predicate for deciding eather to calc th interpolation or not.
-  :axes a map that defines what are the axes scales
-  :select-func what functionality to use if there are multiple interpolated values
-
-  for instance:
-
-  (interpolate-linear-x {10 30 20 50 70 60}}) => 20"
+~~~klipse
+  (interpolate-linear-x {10 30 20 50 70 60} 32)
+~~~
+  "
   [m y
   & {:keys [interpolate? axes select-func]
      :or {interpolate? (constantly true) axes {:x :linear :y :linear} select-func min-coll}}]
@@ -413,63 +391,50 @@
     (assert (every? map? maps))
     (apply merge-with deep-merge* maps)))
 
-(defn branches-and-leaves [m]
-  "Usage:
+(defn branches-and-leaves 
+  "Returns all branches and leaves off a nested map object.
 
-  (branches-and-leaves m)
-
-  returnes all branches and leaves off a nested map object
-
-  for instance:
-
-  (branches-and-leaves {:a {:b 1 :c {:d 2}} :e 3}) => 
-    {:branches [{:a {:b 1 :c {:d 2}} :e 3} {:b 1 :c {:d 2}} {:d 2} {:e 3}] :leaves [1 2 3]}
-
+~~~klipse
+(branches-and-leaves {:a {:b 1 :c {:d 2}} :e 3})
+~~~
   "
+  [m]
   (as-> (tree-seq coll? #(if (map? %) (vals %) %) m) $
         (group-by coll? $)
         (assoc $ true (or (get $ true) []))
         (assoc $ false (or (get $ false) []))
         (clojure.set/rename-keys $ {true :branches false :leaves})))
 
-(defn filter-branches [m p]
-  "Usage:
+(defn filter-branches
+  "Filters branches of a (nested) map `m` according to a predicate `m`.
 
-  (filter-branches m p)
-
-  filters branches of a nested map according to a given pred
-
-  for instance:
-
-  (filter-branches {:id {:b 1 :c {:id 2}} :e 3} :id) =>
-    ({:id {:b 1 :c {:id 2}} :e 3} {:id 2})
+~~~klipse
+(filter-branches {:x {:id 19 :b 1 :c {:id 2}} :e 3} :id)
+~~~
   "
+  [m p]
   (->> (branches-and-leaves m)
        :branches
       (filter p)))
 
 (defn out-of-bound?
-  "check if index `idx` is in range of vector `v`. More efficiant than ```(get v idx)```"
+  "check if index `idx` is in range of vector `v`. More efficient than ```(get v idx)```"
   [v idx]
    (or (<= (count v) idx) (> 0 idx)))
 
-(defn partition-between 
-  "Usage: 
-
-    (partition-between pred coll)
-
-    splits a collection between two items according to the pred.
-    which means split the sequence on breaking point.
+(defn partition-between
+  "Splits a collection between two items according to predicate `pred` - which means split the sequence on breaking point.
 
   See: [here](http://stackoverflow.com/questions/23207490/partition-a-seq-by-a-windowing-predicate-in-clojure)
 
-  For instance:
-    split when ascending serie breaks.
+  For instance, split each time the series stop being ascending:
 
-    (partition-between (fn [a b] (> a b)) [1 2 4 9 4 6 8 2]) => [[1 2 4 9] [4 6 8] [2]]"
-
-  [pred? coll] 
-    (let [switch (reductions not= true (map pred? coll (rest coll)))] 
+~~~klipse
+(partition-between > [1 2 4 9 8 7 6 5 1 2 4 5 11])
+~~~
+"
+  [pred coll]
+    (let [switch (reductions not= true (map pred coll (rest coll)))]
       (map (partial map first) (partition-by second (map list coll switch)))))
 
 
@@ -505,7 +470,7 @@
 
 (defn my-replace
   "Recursively transforms `form` by replacing keys in `smap` with their
-  values, spliced. The values in `smap` must be sequences. Like clojure.walk/prewalk-replace but supports list `in values`."
+  values, spliced. The values in `smap` must be sequences. Like clojure.walk/prewalk-replace but supports list in values."
   [smap form]
   {:pre [(every? seq? (vals smap))]}
   (loop [loc (edn-zip form)]
@@ -513,7 +478,15 @@
       (zip/root loc)
       (recur (zip/next (loc-my-replace smap loc))))))
 
-(defn fix-blank-lines "removes blank lines from the begining and from the end (not from the middle"
+(defn fix-blank-lines
+  "Removes blank lines from the begining and from the end (not from the middle)
+
+~~~klipse
+  ; we use (char 10) for end-of-line due to technical issues with string manipulation with `codox`
+  (let [lines (clojure.string/join (char 10) [\"  \", \"aa\", \"  \", \"bb\", \" \t  \"])]
+  (fix-blank-lines lines))
+~~~
+  "
   [s]
   (->> s
     split-lines
@@ -523,7 +496,15 @@
     reverse
     (join "\n")))
 
-(defn remove-blank-lines [s]
+(defn remove-blank-lines
+"Removes blank lines.
+~~~klipse
+  ; we use (char 10) for end-of-line due to technical issues with string manipulation with `codox`
+  (let [lines (clojure.string/join (char 10) [\"  \", \"aa\", \"  \", \"bb\", \" \t  \"])]
+  (remove-blank-lines lines))
+~~~
+  "
+  [s]
   (->> s
     split-lines
     (remove blank?)
