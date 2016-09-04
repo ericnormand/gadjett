@@ -31,9 +31,9 @@
 
   Returns a map with the same keys as `m` and with the values transformed by `f`.
 
-  For instance:
-
-             (map-object #(* 100 %) {:a 1 :b 2 :c 3}); => {:a 100 :b 200 :c 300})
+~~~klipse
+  (map-object #(* 100 %) {:a 1 :b 2 :c 3})
+~~~
 
   "
   [f m]
