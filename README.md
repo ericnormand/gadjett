@@ -2,11 +2,16 @@
 
 Here are a set of tools that leverage clojure macro power to make your `cljs` coding experience more effective.
 
-## API
+## Usage
 Add this to your `project.clj` dependencies:
 
 [![Clojars Project](https://img.shields.io/clojars/v/viebel/gadjett.svg)](https://clojars.org/viebel/gadjett)
 
+## Live Documentation
+
+[Live and Interactive documentation](http://viebel.github.io/gadjett/index.html)
+
+## API
 In order to use the `gadjett` macros, you have to include the `gadjett` namespace like this:
 
 ```clojure
