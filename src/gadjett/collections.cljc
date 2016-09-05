@@ -511,7 +511,23 @@
     (join "\n")))
 
 #?(:cljs
-    (defn compact "compact an expression by taking only the first `max-elements-in-coll` from collections and first `max-chars-in-str` from strings. It works recursively. It is useful for logging and reporting."
+    (defn compact 
+      "Compacts an expression by taking only the first `max-elements-in-coll` from collections and first `max-chars-in-str` from strings. Functions are displayed as \"lambda()\".
+
+It works recursively. It is useful for logging and reporting.
+
+Default settings:
+
+- `max-elements-in-coll` 10
+- `max-chars-in-str` 20
+
+~~~klipse
+(compact {:infinite-list (range)
+          :long-str \"a very very very very long string - too long to be true\"
+                                                      :long-map (zipmap (range 100) (range 100))
+                                                        :function #(+ 1 2)})
+~~~
+                  "
       [x & {:keys [max-elements-in-coll max-chars-in-str] :or {max-elements-in-coll 10 max-chars-in-str 20} :as args}]
       (cond
         (= x true) x
