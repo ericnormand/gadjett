@@ -12,10 +12,11 @@
             [lein-codox "0.9.7"]
             [lein-midje "3.2"]]
   :figwheel {:server-port 2512}
-  :source-paths ["src" "script"]
+  :source-paths ["src" "script" "try"]
   :codox {
           :language :clojurescript
           :metadata {:doc/format :markdown}
+          :source-paths ["src"]
           :output-path "docs"
           :html {:transforms
                  [[:body]
@@ -48,7 +49,7 @@
               {
                :figwheel {
                           :figwheel true
-                          :source-paths ["src"]
+                          :source-paths ["src" "try"]
                           :compiler {:main "gadjett.test"
                                      :asset-path "js"
                                      :output-to "resources/public/js/main.js"

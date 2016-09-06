@@ -3,13 +3,22 @@
             [clojure.string :refer [blank? join split-lines]]
             [clojure.zip :as zip]))
 
+(def infinity #?(:cljs js/Infinity
+                 :clj Double/POSITIVE_INFINITY))
 
 #?(:cljs 
     (defn to-regular-array[arr]
       (IndexedSeq. arr 0 nil)))
 
 
-(defn =without-keys? [obj-a obj-b keys-list]
+(defn =without-keys?
+  "Compare two maps exclusing some keys
+
+~~~klipse
+  (=without-keys? {:a 1 :b 2 :c 3} {:a 1 :b 5} #{:b :c})
+~~~
+  "
+  [obj-a obj-b keys-list]
   (apply = (map #(apply dissoc % keys-list) [obj-a obj-b])))
 
 (defn vec->map
@@ -23,38 +32,81 @@
   (into {} vec))
 
 (defn map-2d-vec [f m]
-  (map (fn[[k id]] [k (f id)]) m))
-
-(defn map-object
-  "Returns a map with the same keys as `m` and with the values transformed by `f`.
+  "Maps the values of a `2D` vector where each element of the vector is a key-value pair.
+`f` is a `1-ary` function that receives the key.
 
 ~~~klipse
-  (map-object #(* 100 %) {:a 1 :b 2 :c 3})
+  (map-2d-vec inc [[:a 1] [:b 2]])
+~~~
+"
+  (map (fn[[k id]] [k (f id)]) m))
+
+(defn map-2d-vec-kv 
+  "Maps the values of a `2D` vector where each element of the vector is a key-value pair.
+`fk` is a `1-ary` function that receives the key.
+`fv` is a `1-ary` function that receives the value.
+
+~~~klipse
+    (map-2d-vec-kv name inc [[:a 1] [:b 2]])
+~~~
+"
+ [fk fv m]
+  (map (fn[[k id]] [(fk k) (fv id)]) m))
+
+(defn map-object
+  "Returns a map with the same keys as `m` and with the values transformed by `f`. `f` is a `1-ary` function that receives the key.
+
+~~~klipse
+  (map-object inc {:a 1 :b 2 :c 3})
 ~~~
   "
   [f m]
   (vec->map (map-2d-vec f m)))
 
 
-(defn map-object-with-key [f m]
+(defn map-object-with-key
+  "Returns a map with the same keys as `m` and with the values transformed by `f`. `f` must be a `2-ary` function that receives the key and the value as arguments.
+
+  ~~~klipse
+  (map-object-with-key list {:a 1 :b 2 :c 3})
+  ~~~
+  "
+  [f m]
   (into {} (map (fn [[a b]] [a (f a b)]) m)))
 
-(defn map-2d-vec-kv [fk fv m]
-  (map (fn[[k id]] [(fk k) (fv id)]) m))
+(defn map-object-kv
+  "Returns a map with the keys mapped by `fk` and the values mapped by `fv`.
 
-(defn map-object-kv [fk fv m]
+~~~klipse
+    (map-object-kv name inc {:a 1 :b 2 :c 3})
+~~~
+"
+[fk fv m]
   (vec->map (map-2d-vec-kv fk fv m)))
 
 
 (defn map-reverse-hierarchy
   "Turns a hash map inside out.
-  See:  [here](http://stackoverflow.com/a/23653784/813665)"
+  See:  [here](http://stackoverflow.com/a/23653784/813665)
+
+  ~~~klipse
+  (map-reverse-hierarchy {:monday {:banana 2 :apple 3} 
+                          :tuesday {:banana 5 :orange 2}})
+  ~~~
+"
 [m]
   (or (apply merge-with conj
          (for [[k1 v1] m [k2 v2] v1] {k2 {k1 v2}}))
       {}))
 
-(defn mean [x] 
+(defn mean
+  "Calculates the mean (a.k.a average) of a sequence of numbers.
+
+  ~~~klipse
+  (mean [1 2 10 -1 12.3])
+  ~~~
+  "
+ [x]
   (if (empty? x) 0
     (/ (apply + x)
        (count x))))
@@ -69,21 +121,58 @@
   [s]
   (zipmap (range (count s)) s))
 
-(defn- range-with-end 
+(defn- range-with-end
   ([end] [end (range end)])
   ([start end] [end (range start end)])
   ([start end steps] [end (range start end steps)]))
 
 (defn range-till-end[& args]
+  "Like `range` but including the `end`.
+
+~~~klipse
+  (range-till-end 10)
+~~~
+
+~~~klipse
+(range-till-end 10 18)
+~~~
+
+~~~klipse
+(range-till-end 10 100 5)
+~~~
+
+  "
   (let [[end lis] (apply range-with-end args)]
     (concat lis [end])))
 
 (defn append-cyclic[lst a]
+  "Appends an element to a list popping out the first element.
+
+  ~~~klipse
+  (-> (repeat 3 nil)
+      (append-cyclic 1)
+      (append-cyclic 2)
+      (append-cyclic 3)
+      (append-cyclic 4))
+  ~~~
+  "
   (if (seq lst)
     (concat (rest lst) [a])
     lst))
 
-(defn assoc-cyclic 
+(defn assoc-cyclic
+  "Assoc a key-value pair to a map popping out an element of the map.
+  If the key already exists, no element is popped out.
+  If `n` is supplied, no elmement is popped out if the map has less than `n` entries.
+
+  ~~~klipse
+  (-> {:a 1 :b 2 :c 3}
+      (assoc-cyclic :d 4)
+      (assoc-cyclic :e 5)
+      (assoc-cyclic :f 6)
+      (assoc-cyclic :g 7))
+  ~~~
+  "
   ([coll k v]
    (if (contains? coll k)
      (assoc coll k v)
@@ -93,37 +182,99 @@
      (assoc coll k v)
      (assoc-cyclic coll k v))))
 
-(defn max-and-min [x]
+(defn max-and-min
+  "Returns a couple of the `max` and the `min` of a sequence.
+
+  ~~~klipse
+  (max-and-min (range 5))
+  ~~~
+  "
+  [x]
   (if (empty? x)
     [0 0]
     ((juxt #(apply max %) #(apply min %)) x)))
 
-(defn compactize-map [m]
+(defn compactize-map
+  "Removes entries with `nil` values.
+
+  ~~~klipse
+  (compactize-map {:a 1 :b nil :c 3})
+  ~~~
+  "
+  [m]
   (into {} (remove (comp nil? second) m)))
 
 (defn filter-map
-  "Run a function on the elements of a map and keep only those elements for which the function returns true"
+  "Run a function on the elements of a map and keep only those elements for which the function returns true
+  
+  ~~~klipse
+  (filter-map even? {:a 1 :b 2 :c 3})
+  ~~~
+  "
   [f m]
   (into {} (filter (comp f val) m)))
 
 (defn abs[x]
+  "Absolute value of a number
+  
+  ~~~klipse
+  (map abs (range -5 5))
+  ~~~
+
+  "
   (max x (- x)))
 
-(defn nearest-of-ss [ss x]
+(defn nearest-of-ss
+  "Returns the nearest number to `x` of a sorted set
+
+  ~~~klipse
+  (nearest-of-ss (apply sorted-set (range 5)) 1.2)
+  ~~~
+  "
+  [ss x]
   (let [greater (first (subseq ss >= x))
         smaller (first (rsubseq ss <= x))]
     (apply min-key #(abs (- % x)) (remove nil? [greater smaller]))))
 
-(defn nearest-of-seq[a b]
+(defn nearest-of-seq
+  "Maps each element of `b` to its nearest element in `a`.
+  If `a` is empty, returns `b`.
+
+  ~~~klipse
+  (nearest-of-seq (range 5) [1.2 3.4 4])
+  ~~~
+  "
+  [a b]
   (if (empty? a)
     b
     (map (partial nearest-of-ss (apply sorted-set a)) b)))
 
-(defn map-to-object[f lst]
+(defn map-to-object
+  "Returns a map whose keys are the elements of `lst` and values are mapped by `f`.
+
+  ~~~klipse
+  (map-to-object inc (range 5))
+  ~~~
+  "
+  [f lst]
   (zipmap lst (map f lst)))
 
-(defn map-with-index 
+(defn mapify
+  "
+  Takes a seq, and returns a map where the keys are the result of applying f to the elements in the seq.
+  The result of f should be unique for each element in the seq, otherwise you will loose some data.
+  If it is not unique, consider using [group-by](https://clojuredocs.org/clojure.core/group-by).
+
+  ~~~klipse
+  (mapify inc (range 5) )
+  ~~~
+  "
+  [f s]
+  (zipmap (map f s) s))
+
+(defn map-with-index
   "Maps a sequence to a sequence of maps with index and value
+
 ~~~klipse
       (map-with-index [10 20 30] :idx :val)
 ~~~
@@ -131,20 +282,26 @@
   [s idx-key val-key]
   (map-indexed (fn [i v] {idx-key i val-key v}) s))
 
-(defn mapify
-  "
-  Takes a seq, and returns a map where the keys are the result of applying f to the elements in the seq.
-  The result of f should be unique for each element in the seq, otherwise you will loose some data.
-  If it is not unique, consider using [group-by](https://clojuredocs.org/clojure.core/group-by)
-  "
-  [s f]
-  (zipmap (map f s) s))
+
 
 (defn map-to-object-with-index [f s]
     (into {} (map-indexed #(vector %1 (f %2)) s)))
 
 (defn dissoc-in
-  "Dissociates an entry from a nested associative structure returning a new nested structure. keys is a sequence of keys. Any empty maps that result will not be present in the new structure."
+  "Dissociates an entry from a nested associative structure returning a new nested structure. `keys` is a sequence of keys. Any empty maps that result will not be present in the new structure. See [assoc-in](https://clojuredocs.org/clojure.core/assoc-in)
+
+  ~~~klipse
+  (dissoc-in {:a 1 :b 2} [:b])
+  ~~~
+
+  ~~~klipse
+  (dissoc-in {:a {:b 2 :B 3} :c 3} [:a :b])
+  ~~~
+
+  ~~~klipse
+  (dissoc-in {:a {:b 2} :c 3} [:a :b])
+  ~~~
+  "
   [m [k & ks :as keys]]
   (if ks
     (if-let [nextmap (get m k)]
@@ -156,9 +313,14 @@
     (dissoc m k)))
 
 (defn split-by-predicate
-  "Splits a collection to items where the separator is a repetition of at least n elements that satisfy pred.
+  "Splits a collection to items where the separator is a repetition of at least n elements that satisfy `pred`.
 
-  Inspired by: [this question](http://stackoverflow.com/a/23555616/813665)"
+  Inspired by: [this question](http://stackoverflow.com/a/23555616/813665).
+
+  ~~~klipse
+  (split-by-predicate (shuffle (range 30)) even? 2)
+  ~~~
+  "
 [coll pred n] 
   (let [part  (partition-by  pred coll)
         ppart (partition-by (fn [x] (and
@@ -167,19 +329,44 @@
         (map #(apply concat %) ppart)))
 
 (defn positions
-  "Receives a collection of lengths and returns a list of start and end positions"
-[coll-of-lengths maximal-value]
-  (let [end-pos (reductions + coll-of-lengths)
-        start-pos (concat [0] end-pos)]
-    (map #(list (min maximal-value %1) (min maximal-value %2)) start-pos end-pos)))
+  "Receives a collection of lengths and returns a list of start and end positions. Options:
+  * `max-val`: (default `infinity`) - max value for `end`
+  * `first-val`: (default 0) - first value of `start`
+
+  ~~~klipse
+  (positions '(10 10 20) :first-val 100 :max-val 137)
+  ~~~
+  
+  "
+[coll-of-lengths & {:keys [max-val first-val] :or {max-val infinity first-val 0}}]
+  (let [end-pos (rest (reductions + first-val coll-of-lengths))
+        start-pos (concat [first-val] end-pos)]
+    (map #(list (min max-val %1) (min max-val %2)) start-pos end-pos)))
 
 (defn submap?
-  "Checks if m1 is a submap of m2.
-  Map m1 is a submap of m2 if all key/value pairs in m1 exist in m2"
+  "Checks if `m1` is a submap of `m2`.
+  Map `m1` is a submap of `m2` if all key/value pairs in `m1` exist in `m2`.
+
+  ~~~klipse
+  (submap? {:a 1} {:a 1 :b 2})
+  ~~~
+
+  ~~~klipse
+  (submap? {:a 1} {:a 1 :b 2 :c nil})
+  ~~~
+  "
   [m1 m2]
   (= m1 (select-keys m2 (keys m1))))
 
-(defn subsequence [coll start end]
+(defn subsequence
+  "
+  Returns a lazy subsequence of `coll`, starting at `start, ending at `end` (not included).
+
+  ~~~klipse
+  (subsequence (range) 10 20)
+  ~~~
+  "
+  [coll start end]
   (->> (drop start coll)
        (take (- end start))))
 
