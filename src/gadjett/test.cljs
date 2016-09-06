@@ -1,7 +1,9 @@
 (ns gadjett.test
-  (:require 
+  (:require-macros
+    [gadjett.core :as g :refer [log-with-msg deflog deftrack breakpoint dbg defprint]])
+  (:require
     [gadjett.collections :as collections]
-    [gadjett.core :as g :refer-macros [log-with-msg deflog deftrack breakpoint dbg defprint]]))
+    gadjett.core-fn))
 
 (deflog hoora [x] (log (* x x)))
 (defprint footprint [x] (* x x))
