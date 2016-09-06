@@ -372,7 +372,7 @@
 
 (defn split-by-predicate-opt [coll pred n d]
   (let [lengths (map #(* d %) (map count (split-by-predicate (take-nth d coll) pred (/ n d))))
-        pos (positions lengths (count coll))]
+        pos (positions lengths :max-val (count coll))]
     pos))
 
 (defn index-of [s element]

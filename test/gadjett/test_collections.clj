@@ -70,7 +70,7 @@
          {:a 1} {:a 1 :b 2} true
          {:a 1} {:a 2 :b 1} false)
        (tabular
-         (fact "mapify" (mapify ?s ?f) => ?res)
+         (fact "mapify" (mapify ?f ?s) => ?res)
          ?s ?f ?res
          [] - {}
          [1 2 3] - {-1 1 -2 2 -3 3}
@@ -285,7 +285,7 @@
        (fact "nearest-of-seq"
              (nearest-of-seq [1 2 3] [1.2 0.2 9.2]) => [1 1 3])
        (tabular
-         (fact "positions" (positions ?coll ?max) => ?res)
+         (fact "positions" (positions ?coll :max-val ?max) => ?res)
          ?coll ?max ?res
          '(10 20 10) 100 '((0 10) (10 30) (30 40))
          '(10 0 10) 100 '((0 10) (10 10) (10 20))
