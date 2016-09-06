@@ -5,7 +5,7 @@
 (defn set= [a b]
   (= (set a) (set b)))
 
-(facts "Utils/Collections (1)"
+(facts "Collections (1)"
        (fact "sequence->map"
              (sequence->map  [10 20 30]) => {0 10 1 20 2 30})
        (tabular
@@ -31,35 +31,6 @@
          {:a {:b 7} :c {:l 7}} :b '({:b 7})
          {:a {:b {:id 5} :c 9} :id 7 :j {:id 8}} :id '({:a {:b {:id 5} :c 9} :id 7 :j {:id 8}} {:id 8} {:id 5})
          )
-       (tabular
-         (fact "linear-y" (linear-y ?v ?x1 ?y1 ?x2 ?y2) => ?res)
-         ?v ?x1 ?y1 ?x2 ?y2 ?res
-         3 2 4 4 8 6
-         80 75 10 85 70 40
-         )
-       (tabular
-         (fact "interpolate-linear-y" (interpolate-linear-y ?coll ?v) => ?res)
-         ?coll ?v ?res
-         {2 4 4 8} 3 6
-         {2 4 4 8} 6 nil
-         {75 10 85 70} 80 40
-         )
-       (tabular
-         (fact "interpolate-linear-y" (interpolate-linear-y ?coll ?v :interpolate? ?pred) => ?res)
-         ?coll ?v ?pred ?res
-         {2 4 4 8} 3 (fn [below above] (= (* 2 below) above)) 6
-         {2 4 4 8} 6 (fn [below above] (= (* 2 below) above)) nil
-         {75 10 85 70} 80 (fn [below above] (= (* 2 below) above)) nil
-         )
-       (tabular
-         (fact "linear-equation" (linear-equation ?x1 ?y1 ?x2 ?y2) => ?res)
-         ?x1 ?y1 ?x2 ?y2 ?res
-         2 4 1 2 [2 0]
-         0 4 4 0 [-1 4])
-       (tabular
-         (fact "intersection-point" (intersection-point ?a1 ?b1 ?a2 ?b2) => ?res)
-         ?a1 ?b1 ?a2 ?b2 ?res
-         2 0 -1 4 [(/ 4 3) (/ 8 3)])
        (tabular
          (fact "submap?" (submap? ?m1 ?m2) => ?res)
          ?m1 ?m2 ?res
@@ -119,15 +90,9 @@
          )
        )
 
-(facts "Utils/Collections (2)"
+(facts "Collections (2)"
        (fact "select-vals"
              (select-vals {:a 1 :b 2 :c 3} [:a :b]) =>  (partial set= [1 2]))
-       (tabular
-         (fact "replace-keys"
-               (replace-keys ?a ?b) => ?c)
-         ?a ?b ?c
-         {:a 2 :b 3} {:a :A } {:A 2 :b 3}
-         {:a 2 :b 3} {:a :A :b :B} {:A 2 :B 3})
        (tabular
          (fact "find-keys-with-value"
                (find-keys-with-value ?m ?v) => (partial set= ?res))
@@ -173,22 +138,6 @@
          {:a "aaa" :b {:c "param" "d" "txt"}} {[:a] "aaa" [:b :c] "param" [:b "d"] "txt"}
          )
        (tabular
-         (fact "interpolate-linear-x"
-               (interpolate-linear-x ?m 50) => ?res)
-         ?m ?res
-         {10 50} 10
-         {10 40} nil
-         {10 50 20 50} 10
-         {10 20 20 40} nil
-         {10 30 20 70 30 50 50 50} 15
-         {10 50 20 50 30 20 50 70} 10
-         {10 12 40 30 70 80} 52
-         {10 12 40 30 60 80 70 80} 48
-         {10 12 40 30 50 30 60 80 70 80} 54
-         {10 12 40 20 70 80} 55
-         {10 40 20 20 30 80} 25
-         )
-       (tabular
          (fact "select-keys-in-order"
                (select-keys-in-order ?m ?keyseq) => ?res)
          ?m ?keyseq ?res
@@ -202,25 +151,6 @@
              (map-with-index ["a" "b" "c"] :idx :val) =>  '({:idx 0, :val "a"} {:idx 1, :val "b"} {:idx 2, :val "c"}))
        (fact "map-to-object-with-index"
              (map-to-object-with-index #(do {:val %}) ["a" "b" "c"]) => {0 {:val "a"}, 1 {:val "b"}, 2 {:val "c"}})
-       (fact "highest-below-y"
-             (highest-below-y {:a 40 :b 60 :c 90} 20) => nil
-             (highest-below-y {:aa 10 :b 20 :c 30} 20) => [[:b 20]]
-             (highest-below-y {:aa 10 :b 20 :dd 20 :c 30} 20) => (partial set= [[:dd 20] [:b 20]])
-             (highest-below-y {:aa 10 :b 20 :dd 20 :c 30} 25) => (partial set= [[:dd 20] [:b 20]])
-             (highest-below-y {:a 10 :b 20 :c 30} 19) => [[:a 10]])
-       (fact "lowest-above-y"
-             (lowest-above-y {:a 10 :b 20 :c 30} 100) => nil
-             (lowest-above-y {:a 10 :b 20 :c 30} 20) => [[:b 20]]
-             (lowest-above-y {:a 10 :b 20 :dd 20 :c 30} 19) => (partial set= [[:dd 20] [:b 20]])
-             (lowest-above-y {:a 10 :b 20 :dd 20 :c 30} 20) => (partial set= [[:dd 20] [:b 20]])
-             (lowest-above-y {:a 10 :b 20 :c 30} 19) => [[:b 20]])
-       #_(fact "strings-to-keywords"
-               (strings-to-keywords ":a :b :c") => [:a :b :c]
-               (strings-to-keywords ":a :b     :c") => [:a :b :c])
-       (fact "display-sequence"
-             (display-sequence (range 100 10 -1) [90 80 70 60 50] 50 10) => [90 80 70 60 50]
-             (display-sequence (range 100 10 -1) [90 80 70 60 50] 100 10) => [100 90 80 70 60]
-             (display-sequence (range 100 10 -1) [90 80 70 60 50] 40 10) => [80 70 60 50 40])
        (tabular
          (fact "map-reverse-hierarchy"
                (map-reverse-hierarchy ?in) => ?out)

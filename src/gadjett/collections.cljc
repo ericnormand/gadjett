@@ -312,6 +312,21 @@
       m)
     (dissoc m k)))
 
+(defn positions
+  "Receives a collection of lengths and returns a list of start and end positions. Options:
+  * `max-val`: (default `infinity`) - max value for `end`
+  * `first-val`: (default 0) - first value of `start`
+
+  ~~~klipse
+  (positions '(10 10 20) :first-val 100 :max-val 137)
+  ~~~
+
+  "
+[coll-of-lengths & {:keys [max-val first-val] :or {max-val infinity first-val 0}}]
+  (let [end-pos (rest (reductions + first-val coll-of-lengths))
+        start-pos (concat [first-val] end-pos)]
+    (map #(list (min max-val %1) (min max-val %2)) start-pos end-pos)))
+
 (defn split-by-predicate
   "Splits a collection to items where the separator is a repetition of at least n elements that satisfy `pred`.
 
@@ -328,20 +343,38 @@
                                       (every? pred x))) part)]
         (map #(apply concat %) ppart)))
 
-(defn positions
-  "Receives a collection of lengths and returns a list of start and end positions. Options:
-  * `max-val`: (default `infinity`) - max value for `end`
-  * `first-val`: (default 0) - first value of `start`
-
-  ~~~klipse
-  (positions '(10 10 20) :first-val 100 :max-val 137)
-  ~~~
-  
+(defn split-by-predicate-positions
   "
-[coll-of-lengths & {:keys [max-val first-val] :or {max-val infinity first-val 0}}]
-  (let [end-pos (rest (reductions + first-val coll-of-lengths))
-        start-pos (concat [first-val] end-pos)]
-    (map #(list (min max-val %1) (min max-val %2)) start-pos end-pos)))
+  Optimized version of `split-by-predicate` where we assume that the data is from a signal that we can sample.
+
+  Instead of checking each element, we check 1 over `n` elements.
+
+ We return the positions where the data splits.
+
+~~~klipse
+  (let [data (map Math/sin (range 0 6.28 0.001))]
+    (split-by-predicate-opt data #(<= -0.01 % 0.01) 2 10))
+~~~
+
+  The following assertion holds:
+
+~~~clojure
+  (= (split-by-predicate coll pred n)
+     (map #(apply subsequence data %) (split-by-predicate-opt coll pred n 1)))
+~~~
+
+  Here is an example:
+
+~~~klipse
+  (let [data (map Math/sin (range 0 6.28 0.01))]
+    (= (split-by-predicate data #(<= -0.01 % 0.01) 2)
+       (map #(apply subsequence data %) (split-by-predicate-opt data #(<= -0.01 % 0.01) 2 1))))
+~~~
+  "
+  [coll pred n d]
+  (let [lengths (map #(* d %) (map count (split-by-predicate (take-nth d coll) pred (/ n d))))
+        pos (positions lengths :max-val (count coll))]
+    pos))
 
 (defn submap?
   "Checks if `m1` is a submap of `m2`.
@@ -370,156 +403,9 @@
   (->> (drop start coll)
        (take (- end start))))
 
-(defn split-by-predicate-opt [coll pred n d]
-  (let [lengths (map #(* d %) (map count (split-by-predicate (take-nth d coll) pred (/ n d))))
-        pos (positions lengths :max-val (count coll))]
-    pos))
-
 (defn index-of [s element]
   (or (ffirst (filter #(= (second %) element) (map-indexed #(vector %1 %2) s)))
       -1))
-
-(defn display-sequence [long-seq short-seq value abs-step]
-  (let [old-step (- (second short-seq) (first short-seq))
-        step (* (- (second long-seq) (first long-seq)) abs-step)
-        position-in-old-sequence (/ (- value (first short-seq)) old-step)]
-    (cond
-      (<= 0 position-in-old-sequence 4) (range (- value (* step position-in-old-sequence)) (+ value (* step (- 5 position-in-old-sequence))) step)
-      (= position-in-old-sequence 5) (range (- value (* step (- position-in-old-sequence 1))) (+ value step) step)
-      (empty? short-seq) (range (- value step) (+ value (* 4 step)) step)
-      :else (range value (+ value (* 5 step)) step))))
-
-(defn highest-below-y [m v]
-  (second (last (sort-by first (group-by second (filter (fn [[x y]] (<= y v)) m))))))
-
-(defn lowest-above-y [m v]
-  (second (first (sort-by first (group-by second (filter (fn [[x y]] (>= y v)) m))))))
-
-(defn highest-below-x [m v]
-  (second (last (sort-by first (group-by first (filter (fn [[x y]] (<= x v)) m))))))
-
-(defn lowest-above-x [m v]
-  (second (first (sort-by first (group-by first (filter (fn [[x y]] (>= x v)) m))))))
-
-(defn find-keys-with-values-in [m s]
-  (filter (comp s m) (keys m)))
-
-(defn replace-keys [coll key-map]
-  (zipmap (map #(get key-map % %) (keys coll)) (vals coll)))
-
-(defn find-keys-with-value [m v]
-  (find-keys-with-values-in m #{v}))
-
-(defn linear-y [x x1 y1 x2 y2]
-  (+  y1 (/ (* (- y2 y1) (- x x1)) (- x2 x1))))
-
-(defn log-x-linear-y [x x1 y1 x2 y2]
-  (+ y1 (/ (* (- y2 y1) (- (Math/log x) (Math/log x1))) (- (Math/log x2) (Math/log x1)))))
-
-(defn linear-y-func [{:keys [x y] :as axes}]
-  ;Add more options if needed
-  (case [x y]
-    [:linear :linear] linear-y
-    [:log :linear] log-x-linear-y
-    linear-y))
-
-(defn interpolate-linear-y [m x 
-  & {:keys [interpolate? axes] :or {interpolate? (constantly true) axes {:x :linear :y :linear}}}]
-    (or (get m x)
-        (let [[x-below y-below] (last (sort (highest-below-x m x)))
-              [x-above y-above] (first (sort (lowest-above-x m x)))]
-        (when (and x-below x-above (interpolate? x-below x-above))
-          ((linear-y-func axes) x x-below y-below x-above y-above)))))
-
-(defn linear-x [y x1 y1 x2 y2]
-  (+ x1 (/ (* (- x2 x1) (- y y1)) (- y2 y1))))
-
-(defn linear-x-func [{:keys [x y] :as axes}]
-  ;Add more options if needed
-  (case [x y]
-    [:linear :linear] linear-x
-    linear-x))
-
-(defn below-and-above-y [y [x1 y1] [x2 y2]]
-  (when (or (< y1 y y2) (> y1 y y2)) [[x1 y1] [x2 y2]]))
-
-(defn find-below-and-above-y [m y]
-  (as->
-    (map vec m) $
-    (sort-by first $)
-    (map (partial below-and-above-y y) $ (rest $))
-    (remove nil? $)))
-
-(defn calc-interpolated-values [m y interpolate? axes]
-  (as->
-    (fn [[[x-below y-below] [x-above y-above]]]
-      (when (and y-below y-above (interpolate? y-below y-above))
-        ((linear-x-func axes) y x-below y-below x-above y-above))) $
-    (keep $ (find-below-and-above-y m y))))
-
-(defn min-coll [coll]
-  (when-not (empty? coll)
-    (apply min coll)))
-
-(defn interpolate-linear-x
-  "Returns the interpolated x for a given y acording to the select-func thats passed
-
-- `:interpolate?` -  a predicate for deciding eather to calc th interpolation or not.
--   `:axes` -  a map that defines what are the axes scales
--   `:select-func` - what functionality to use if there are multiple interpolated values
-
-~~~klipse
-  (interpolate-linear-x {10 30 20 50 70 60} 32)
-~~~
-  "
-  [m y
-  & {:keys [interpolate? axes select-func]
-     :or {interpolate? (constantly true) axes {:x :linear :y :linear} select-func min-coll}}]
-  (let [values (find-keys-with-value m y)
-        interpolated-values (calc-interpolated-values m y interpolate? axes)]
-    (select-func (concat values interpolated-values))))
-
-(defn linear-equation [x1 y1 x2 y2]
-  (let [a (/ (- y1 y2) (- x1 x2))
-        b (- y1 (* a x1))]
-    [a b]))
-
-(defn log-x-linear-equation [x1 y1 x2 y2]
-  (let [a (/ (- y1 y2) (- (Math/log x1) (Math/log x2)))
-        b (- y1 (* a (Math/log x1)))]
-    [a b]))
-
-(defn linear-equation-func [{:keys [x y] :as axes}]
-  ;Add more options if needed
-  (case [x y]
-    [:linear :linear] linear-equation
-    [:log :linear] log-x-linear-equation
-    linear-equation))
-
-(defn intersection-point [a1 b1 a2 b2]
-  (let [x (/ (- b2 b1) (- a1 a2))
-        y (+ ( * a1 x) b1)]
-    [x y]))
-
-(defn log-x-intersection-point [a1 b1 a2 b2]
-  (let [x (/ (- b2 b1) (- a1 a2))
-        y (+ ( * a1 x) b1)]
-    [(Math/exp x) y]))
-
-(defn intersection-point-func [{:keys [x y] :as axes}]
-  ;Add more options if needed
-  (case [x y]
-    [:linear :linear] intersection-point
-    [:log :linear] log-x-intersection-point
-    intersection-point))
-
-(defn intersection-point-from-2-lines-points [[ax1 ay1 ax2 ay2] [bx1 by1 bx2 by2]
-  & {:keys [axes] :or {axes {:x :linear :y :linear}}}]
-  (let [[a1 b1] ((linear-equation-func axes) ax1 ay1 ax2 ay2)
-        [a2 b2] ((linear-equation-func axes) bx1 by1 bx2 by2)
-        [x y] ((intersection-point-func axes) a1 b1 a2 b2)]
-    [x y]))
-
 
 (defn select-keys-in-order
   "Thanks [Jay Fields](http://blog.jayfields.com/2011/01/clojure-select-keys-select-values-and.html)"
@@ -698,7 +584,7 @@
     (join "\n")))
 
 #?(:cljs
-    (defn compact 
+    (defn compact
       "(clojurescript only)
 
       Compacts an expression by taking only the first `max-elements-in-coll` from collections and first `max-chars-in-str` from strings. Functions are displayed as \"lambda()\".
