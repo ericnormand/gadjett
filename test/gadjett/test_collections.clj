@@ -93,24 +93,7 @@
 (facts "Collections (2)"
        (fact "select-vals"
              (select-vals {:a 1 :b 2 :c 3} [:a :b]) =>  (partial set= [1 2]))
-       (tabular
-         (fact "find-keys-with-value"
-               (find-keys-with-value ?m ?v) => (partial set= ?res))
-         ?m ?v ?res
-         {} 2 []
-         {:a 1 :b 2} 5 []
-         {:a 1 :b 2} 1 [:a]
-         {:a 1 :b 2 :c 1} 1 [:a :c])
-       (tabular
-         (fact "find-keys-with-values-in"
-               (find-keys-with-values-in ?m ?v) => (partial set= ?res))
-         ?m ?v ?res
-         {} #{} []
-         {:a 1 :b 2} #{} []
-         {:a 1 :b 2} #{1 2} [:a :b]
-         {:a 1 :b 2} #{1} [:a]
-         {:a 1 :b 2 :c 1} #{1 2} [:a :b :c]
-         {:a 1 :b 2 :c 1} #{1} [:a :c])
+       
        (tabular
          (fact "sort-keys-by"
                (sort-keys-by second ?m) => ?res)
@@ -229,7 +212,7 @@
          '(123 0 1 0 0 0 0 0 1 1 0 0 0 0 0 1 0 1 0 0 0 0 0 1 199)  4 '((123 0 1) (0 0 0 0 0) (1 1) (0 0 0 0 0) (1 0 1) (0 0 0 0 0) (1 199))
          '(123 0 1 0 0 0 0 0 1 1 0 0 0 0 0 1 0 1 0 0 0 0 0 1 199)  5 '((123 0 1) (0 0 0 0 0) (1 1) (0 0 0 0 0) (1 0 1) (0 0 0 0 0) (1 199)))
        (tabular
-         (fact "split-by-predicate-opt with factor = 1" (split-by-predicate-opt ?coll (partial = 0) ?n 1) => ?res)
+         (fact "split-by-predicate-positions with factor = 1" (split-by-predicate-positions ?coll (partial = 0) ?n 1) => ?res)
          ?coll ?n ?res
          '(0 123 0 1 0 0 0 0 0 1 1 0 0 0 0 0 1 0 1 0 0 0 0 0 1 199)  4 '((0 4) (4 9) (9 11) (11 16) (16 19) (19 24) (24 26))
          '(123 0 1 0 0 0 0 0 1 1 0 0 0 0 0 1 0 1 0 0 0 0 0 1 199)  4 '((0 3) (3 8) (8 10) (10 15) (15 18) (18 23) (23 25)))

@@ -34,7 +34,25 @@
        (tabular
          (fact "intersection-point" (intersection-point ?a1 ?b1 ?a2 ?b2) => ?res)
          ?a1 ?b1 ?a2 ?b2 ?res
-         2 0 -1 4 [(/ 4 3) (/ 8 3)]))
+         2 0 -1 4 [(/ 4 3) (/ 8 3)])
+       (tabular
+         (fact "find-keys-with-value"
+               (find-keys-with-value ?m ?v) => (partial set= ?res))
+         ?m ?v ?res
+         {} 2 []
+         {:a 1 :b 2} 5 []
+         {:a 1 :b 2} 1 [:a]
+         {:a 1 :b 2 :c 1} 1 [:a :c])
+       (tabular
+         (fact "find-keys-with-values-in"
+               (find-keys-with-values-in ?m ?v) => (partial set= ?res))
+         ?m ?v ?res
+         {} #{} []
+         {:a 1 :b 2} #{} []
+         {:a 1 :b 2} #{1 2} [:a :b]
+         {:a 1 :b 2} #{1} [:a]
+         {:a 1 :b 2 :c 1} #{1 2} [:a :b :c]
+         {:a 1 :b 2 :c 1} #{1} [:a :c]))
 
 (facts "Linear (2)"
        (tabular

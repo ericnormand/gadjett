@@ -86,16 +86,16 @@
 <p>Instead of checking each element, we check 1 over <code>n</code> elements.</p>
 <p>We return the positions where the data splits.</p>
 <pre><code class="klipse">  (let [data (map Math/sin (range 0 6.28 0.001))]
-    (split-by-predicate-opt data #(&lt;= -0.01 % 0.01) 2 10))
+    (split-by-predicate-positions data #(&lt;= -0.01 % 0.01) 2 10))
 </code></pre>
 <p>The following assertion holds:</p>
 <pre><code class="clojure">  (= (split-by-predicate coll pred n)
-     (map #(apply subsequence data %) (split-by-predicate-opt coll pred n 1)))
+     (map #(apply subsequence data %) (split-by-predicate-positions coll pred n 1)))
 </code></pre>
 <p>Here is an example:</p>
 <pre><code class="klipse">  (let [data (map Math/sin (range 0 6.28 0.01))]
     (= (split-by-predicate data #(&lt;= -0.01 % 0.01) 2)
-       (map #(apply subsequence data %) (split-by-predicate-opt data #(&lt;= -0.01 % 0.01) 2 1))))
+       (map #(apply subsequence data %) (split-by-predicate-positions data #(&lt;= -0.01 % 0.01) 2 1))))
 </code></pre></div></div></div><div class="public anchor" id="var-submap.3F"><h3>submap?</h3><div class="usage"><code>(submap? m1 m2)</code></div><div class="doc"><div class="markdown"><p>Checks if <code>m1</code> is a submap of <code>m2</code>. Map <code>m1</code> is a submap of <code>m2</code> if all key/value pairs in <code>m1</code> exist in <code>m2</code>.</p>
 <pre><code class="klipse">(submap? {:a 1} {:a 1 :b 2})
 </code></pre>

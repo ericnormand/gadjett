@@ -353,14 +353,14 @@
 
 ~~~klipse
   (let [data (map Math/sin (range 0 6.28 0.001))]
-    (split-by-predicate-opt data #(<= -0.01 % 0.01) 2 10))
+    (split-by-predicate-positions data #(<= -0.01 % 0.01) 2 10))
 ~~~
 
   The following assertion holds:
 
 ~~~clojure
   (= (split-by-predicate coll pred n)
-     (map #(apply subsequence data %) (split-by-predicate-opt coll pred n 1)))
+     (map #(apply subsequence data %) (split-by-predicate-positions coll pred n 1)))
 ~~~
 
   Here is an example:
@@ -368,7 +368,7 @@
 ~~~klipse
   (let [data (map Math/sin (range 0 6.28 0.01))]
     (= (split-by-predicate data #(<= -0.01 % 0.01) 2)
-       (map #(apply subsequence data %) (split-by-predicate-opt data #(<= -0.01 % 0.01) 2 1))))
+       (map #(apply subsequence data %) (split-by-predicate-positions data #(<= -0.01 % 0.01) 2 1))))
 ~~~
   "
   [coll pred n d]
