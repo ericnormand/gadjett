@@ -699,7 +699,9 @@
 
 #?(:cljs
     (defn compact 
-      "Compacts an expression by taking only the first `max-elements-in-coll` from collections and first `max-chars-in-str` from strings. Functions are displayed as \"lambda()\".
+      "(clojurescript only)
+
+      Compacts an expression by taking only the first `max-elements-in-coll` from collections and first `max-chars-in-str` from strings. Functions are displayed as \"lambda()\".
 
 It works recursively. It is useful for logging and reporting.
 
