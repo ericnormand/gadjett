@@ -55,19 +55,6 @@
          (comp not-empty str) {:a 1 :b nil :c ""} {:a 1}
          (comp not nil?) {:a 1 :b nil :c ""} {:a 1 :c ""})
        (tabular
-         (fact "select-vals-in-order"
-               (select-vals-in-order ?m ?ks) => ?res)
-         ?m ?ks ?res
-         {:a 1 :b 2} [:a :b] [1 2]
-         {:a 1 :b 2} [:b :a] [2 1]
-         {:b 2 :a 1} [:a :b] [1 2]
-         {:b 2 :a 1} [:b :a] [2 1]
-         {:b 1 :a 2} [:b :a] [1 2]
-         {:b 1 :a 2} [:a :b] [2 1]
-         {2 "B" 1 "A"} [1 2] ["A" "B"]
-         {2 "B" 1 "A"} [2 1] ["B" "A"]
-         )
-       (tabular
          (fact "=without-keys?"
                (=without-keys? ?a ?b ?kl) => ?res)
          ?a ?b ?kl ?res
@@ -91,44 +78,12 @@
        )
 
 (facts "Collections (2)"
-       (fact "select-vals"
-             (select-vals {:a 1 :b 2 :c 3} [:a :b]) =>  (partial set= [1 2]))
-       
-       (tabular
-         (fact "sort-keys-by"
-               (sort-keys-by second ?m) => ?res)
-         ?m ?res
-         {:a 1 :d 3} [:a :d]
-         {:a 10 :d 3} [:d :a])
-       (tabular
-         (fact "recursive-vals"
-               (recursive-vals ?a) => (partial set= ?res))
-         ?a ?res
-         {:a "aaa" :b {:c "param" "d" "txt"}} ["aaa" "param" "txt"]
-         )
-       (tabular
-         (fact "recursive-vals empty"
-               (recursive-vals ?a) => ?res)
-         ?a ?res
-         nil nil
-         {} nil
-         )
        (tabular
          (fact "flatten-keys"
                (flatten-keys ?a) => ?res)
          ?a ?res
          {} {}
          {:a "aaa" :b {:c "param" "d" "txt"}} {[:a] "aaa" [:b :c] "param" [:b "d"] "txt"}
-         )
-       (tabular
-         (fact "select-keys-in-order"
-               (select-keys-in-order ?m ?keyseq) => ?res)
-         ?m ?keyseq ?res
-         {:a 1 :b 2} [:a] '(1)
-         {:a 1 :b 2} [:a :b] '(1 2)
-         {:a 1 :b 2} [:a :b :c] '(1 2 nil)
-         {:a 1 :b 2} [] []
-         {:a 1 :b 2} nil []
          )
        (fact "map-with-index"
              (map-with-index ["a" "b" "c"] :idx :val) =>  '({:idx 0, :val "a"} {:idx 1, :val "b"} {:idx 2, :val "c"}))

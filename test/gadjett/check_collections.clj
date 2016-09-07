@@ -7,17 +7,6 @@
             [clojure.test.check.properties :as prop]))
 
 
-(defspec check-select-keys-in-order-count 10
-  (prop/for-all [m (gen/map gen/keyword gen/int)
-                 keyseq (gen/vector gen/keyword)]
-                (let [res (select-keys-in-order m keyseq)]
-                  (= (count res) (count keyseq)))))
-
-(defspec check-select-keys-in-order 10
-  (prop/for-all [m (gen/map gen/keyword gen/int)
-                 keyseq (gen/vector gen/keyword)]
-                (let [res (select-keys-in-order m keyseq)]
-                  (every? identity (map #(= (get m %1) %2) keyseq res)))))
 
 (defspec check-max-and-min 100
   (hg/property (fn [v] 
