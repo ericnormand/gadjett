@@ -31,7 +31,7 @@
   [vec]
   (into {} vec))
 
-(defn map-2d-vec [f m]
+(defn map-2d-vec
   "Maps the values of a `2D` vector where each element of the vector is a key-value pair.
 `f` is a `1-ary` function that receives the key.
 
@@ -39,6 +39,7 @@
   (map-2d-vec inc [[:a 1] [:b 2]])
 ~~~
 "
+  [f m]
   (map (fn[[k id]] [k (f id)]) m))
 
 (defn map-2d-vec-kv 
@@ -67,9 +68,9 @@
 (defn map-object-with-key
   "Returns a map with the same keys as `m` and with the values transformed by `f`. `f` must be a `2-ary` function that receives the key and the value as arguments.
 
-  ~~~klipse
+~~~klipse
   (map-object-with-key list {:a 1 :b 2 :c 3})
-  ~~~
+~~~
   "
   [f m]
   (into {} (map (fn [[a b]] [a (f a b)]) m)))
@@ -89,10 +90,10 @@
   "Turns a hash map inside out.
   See:  [here](http://stackoverflow.com/a/23653784/813665)
 
-  ~~~klipse
+~~~klipse
   (map-reverse-hierarchy {:monday {:banana 2 :apple 3} 
                           :tuesday {:banana 5 :orange 2}})
-  ~~~
+~~~
 "
 [m]
   (or (apply merge-with conj
@@ -102,9 +103,9 @@
 (defn mean
   "Calculates the mean (a.k.a average) of a sequence of numbers.
 
-  ~~~klipse
+~~~klipse
   (mean [1 2 10 -1 12.3])
-  ~~~
+~~~
   "
  [x]
   (if (empty? x) 0
@@ -126,7 +127,7 @@
   ([start end] [end (range start end)])
   ([start end steps] [end (range start end steps)]))
 
-(defn range-till-end[& args]
+(defn range-till-end
   "Like `range` but including the `end`.
 
 ~~~klipse
@@ -142,20 +143,22 @@
 ~~~
 
   "
+  [& args]
   (let [[end lis] (apply range-with-end args)]
     (concat lis [end])))
 
-(defn append-cyclic[lst a]
+(defn append-cyclic
   "Appends an element to a list popping out the first element.
 
-  ~~~klipse
+~~~klipse
   (-> (repeat 3 nil)
       (append-cyclic 1)
       (append-cyclic 2)
       (append-cyclic 3)
       (append-cyclic 4))
-  ~~~
+~~~
   "
+  [lst a]
   (if (seq lst)
     (concat (rest lst) [a])
     lst))
@@ -165,13 +168,13 @@
   If the key already exists, no element is popped out.
   If `n` is supplied, no elmement is popped out if the map has less than `n` entries.
 
-  ~~~klipse
+~~~klipse
   (-> {:a 1 :b 2 :c 3}
       (assoc-cyclic :d 4)
       (assoc-cyclic :e 5)
       (assoc-cyclic :f 6)
       (assoc-cyclic :g 7))
-  ~~~
+~~~
   "
   ([coll k v]
    (if (contains? coll k)
@@ -185,9 +188,9 @@
 (defn max-and-min
   "Returns a couple of the `max` and the `min` of a sequence.
 
-  ~~~klipse
+~~~klipse
   (max-and-min (range 5))
-  ~~~
+~~~
   "
   [x]
   (if (empty? x)
@@ -197,9 +200,9 @@
 (defn compactize-map
   "Removes entries with `nil` values.
 
-  ~~~klipse
+~~~klipse
   (compactize-map {:a 1 :b nil :c 3})
-  ~~~
+~~~
   "
   [m]
   (into {} (remove (comp nil? second) m)))
@@ -207,29 +210,30 @@
 (defn filter-map
   "Run a function on the elements of a map and keep only those elements for which the function returns true
   
-  ~~~klipse
+~~~klipse
   (filter-map even? {:a 1 :b 2 :c 3})
-  ~~~
+~~~
   "
   [f m]
   (into {} (filter (comp f val) m)))
 
-(defn abs[x]
+(defn abs
   "Absolute value of a number
-  
-  ~~~klipse
-  (map abs (range -5 5))
-  ~~~
 
-  "
+~~~klipse
+  (map abs (range -5 5))
+~~~
+
+"
+[x]
   (max x (- x)))
 
 (defn nearest-of-ss
   "Returns the nearest number to `x` of a sorted set
 
-  ~~~klipse
+~~~klipse
   (nearest-of-ss (apply sorted-set (range 5)) 1.2)
-  ~~~
+~~~
   "
   [ss x]
   (let [greater (first (subseq ss >= x))
@@ -240,9 +244,9 @@
   "Maps each element of `b` to its nearest element in `a`.
   If `a` is empty, returns `b`.
 
-  ~~~klipse
+~~~klipse
   (nearest-of-seq (range 5) [1.2 3.4 4])
-  ~~~
+~~~
   "
   [a b]
   (if (empty? a)
@@ -252,9 +256,9 @@
 (defn map-to-object
   "Returns a map whose keys are the elements of `lst` and values are mapped by `f`.
 
-  ~~~klipse
+~~~klipse
   (map-to-object inc (range 5))
-  ~~~
+~~~
   "
   [f lst]
   (zipmap lst (map f lst)))
@@ -265,9 +269,9 @@
   The result of f should be unique for each element in the seq, otherwise you will loose some data.
   If it is not unique, consider using [group-by](https://clojuredocs.org/clojure.core/group-by).
 
-  ~~~klipse
+~~~klipse
   (mapify inc (range 5) )
-  ~~~
+~~~
   "
   [f s]
   (zipmap (map f s) s))
@@ -282,25 +286,20 @@
   [s idx-key val-key]
   (map-indexed (fn [i v] {idx-key i val-key v}) s))
 
-
-
-(defn map-to-object-with-index [f s]
-    (into {} (map-indexed #(vector %1 (f %2)) s)))
-
 (defn dissoc-in
   "Dissociates an entry from a nested associative structure returning a new nested structure. `keys` is a sequence of keys. Any empty maps that result will not be present in the new structure. See [assoc-in](https://clojuredocs.org/clojure.core/assoc-in)
 
-  ~~~klipse
+~~~klipse
   (dissoc-in {:a 1 :b 2} [:b])
-  ~~~
+~~~
 
-  ~~~klipse
+~~~klipse
   (dissoc-in {:a {:b 2 :B 3} :c 3} [:a :b])
-  ~~~
+~~~
 
-  ~~~klipse
+~~~klipse
   (dissoc-in {:a {:b 2} :c 3} [:a :b])
-  ~~~
+~~~
   "
   [m [k & ks :as keys]]
   (if ks
@@ -317,9 +316,9 @@
   * `max-val`: (default `infinity`) - max value for `end`
   * `first-val`: (default 0) - first value of `start`
 
-  ~~~klipse
+~~~klipse
   (positions '(10 10 20) :first-val 100 :max-val 137)
-  ~~~
+~~~
 
   "
 [coll-of-lengths & {:keys [max-val first-val] :or {max-val infinity first-val 0}}]
@@ -332,9 +331,9 @@
 
   Inspired by: [this question](http://stackoverflow.com/a/23555616/813665).
 
-  ~~~klipse
+~~~klipse
   (split-by-predicate (shuffle (range 30)) even? 2)
-  ~~~
+~~~
   "
 [coll pred n] 
   (let [part  (partition-by  pred coll)
@@ -380,13 +379,13 @@
   "Checks if `m1` is a submap of `m2`.
   Map `m1` is a submap of `m2` if all key/value pairs in `m1` exist in `m2`.
 
-  ~~~klipse
+~~~klipse
   (submap? {:a 1} {:a 1 :b 2})
-  ~~~
+~~~
 
-  ~~~klipse
+~~~klipse
   (submap? {:a 1} {:a 1 :b 2 :c nil})
-  ~~~
+~~~
   "
   [m1 m2]
   (= m1 (select-keys m2 (keys m1))))
@@ -395,62 +394,74 @@
   "
   Returns a lazy subsequence of `coll`, starting at `start, ending at `end` (not included).
 
-  ~~~klipse
+~~~klipse
   (subsequence (range) 10 20)
-  ~~~
+~~~
   "
   [coll start end]
   (->> (drop start coll)
        (take (- end start))))
 
-(defn index-of [s element]
+(defn index-of
+  "Returns the index of an element in a sequence or `-1` if not present.
+
+  ~~~klipse
+  (index-of (range 100) 18)
+  ~~~
+  "
+  [s element]
   (or (ffirst (filter #(= (second %) element) (map-indexed #(vector %1 %2) s)))
       -1))
 
-(defn select-keys-in-order
-  "Thanks [Jay Fields](http://blog.jayfields.com/2011/01/clojure-select-keys-select-values-and.html)"
-  [m keyseq]
-  (map m keyseq))
-
-(defn select-vals [map keyseq]
-  (vals (select-keys map keyseq)))
-
-(defn select-vals-in-order
-  "Thanks [Jay Fields](http://blog.jayfields.com/2011/01/clojure-select-keys-select-values-and.html)"
-  [map ks]
-  (reduce #(conj %1 (map %2)) [] ks))
-
-(defn flatten-keys* [a ks m]
+(defn- flatten-keys* [a ks m]
   (if (map? m)
     (if (seq m)
       (reduce into (map (fn [[k v]] (flatten-keys* a (conj ks k) v)) (seq m)))
       {})
     (assoc a ks m)))
 
-(defn flatten-keys "Thanks to [Jay Fields](http://blog.jayfields.com/2010/09/clojure-flatten-keys.html)"
+(defn flatten-keys
+"
+Flatten the keys of a nested map.
+Thanks to [Jay Fields](http://blog.jayfields.com/2010/09/clojure-flatten-keys.html)
+
+~~~klipse
+(flatten-keys {:a {:b 1} :c {:d 2 :e 4 :f {:g 8}}})
+~~~
+"
   [m] (flatten-keys* {} [] m))
 
-(defn unflatten-keys [m]
+(defn unflatten-keys
+"
+  Unflattend the keys of a map that has been `flatten-keys`ed.
+
+~~~klipse
+(unflatten-keys {[:a :b] 1, [:c :d] 2, [:c :e] 4, [:c :f :g] 8})
+~~~
+"
+  [m]
   (reduce-kv (fn [a b c] (assoc-in a b c)) {} m))
 
-(defn take-from-map 
+(defn take-from-map
   "Creates a map with n leaves which are nested values of m.
+  The following assertion holds:
 
-      (= n (count (flatten-keys (take-from-map n m)))))))"
+~~~clojure
+      (>= n (count (flatten-keys (take-from-map n m)))))))
+~~~
+
+~~~klipse
+  (take-from-map 3 {:a {:b 1}, :c {:e 4, :d 2, :f {:g 8}}})
+~~~
+  "
   [n m]
   (->> m
        flatten-keys
        (take n)
-       (into {}) 
+       (into {})
        unflatten-keys))
 
-(defn recursive-vals [m]
-  (when m (vals (flatten-keys m))))
-
-(defn sort-keys-by [a-func a-map]
-  (map first (sort-by a-func a-map)))
-
-(defn deep-merge* [& maps]
+(defn- deep-merge* [& maps]
   (let [f (fn [old new]
             (if (and (map? old) (map? new))
               (merge-with deep-merge* old new)
@@ -459,12 +470,19 @@
       (apply merge-with f maps)
       (last maps))))
 
-(defn deep-merge [& maps]
+(defn deep-merge
+" Deep merges maps.
+
+~~~klipse
+(deep-merge {} {:a {:b 1}, :c {:e 4, :d 2, :f {:g 8}}} {:a {:b 1}, :c {:e 4, :d 2000, :f {:g 9000}}})
+~~~
+"
+  [& maps]
   (let [maps (filter identity maps)]
     (assert (every? map? maps))
     (apply merge-with deep-merge* maps)))
 
-(defn branches-and-leaves 
+(defn branches-and-leaves
   "Returns all branches and leaves off a nested map object.
 
 ~~~klipse
@@ -491,7 +509,12 @@
       (filter p)))
 
 (defn out-of-bound?
-  "check if index `idx` is in range of vector `v`. More efficient than ```(get v idx)```"
+  "Checks if index `idx` is in range of vector `v`. More efficient than `(get v idx)`
+
+~~~klipse
+    (map #(out-of-bound? [1 2 3] %) [-1 0 1 2 3 4])
+~~~
+  "
   [v idx]
    (or (<= (count v) idx) (> 0 idx)))
 
@@ -512,11 +535,27 @@
 
 
 (defn seqify
-  "Ensure `s` is a sequence: if `s` is a sequence returns it; otherwise returns (s)"
+  "Ensure `s` is a sequence: if `s` is a sequence returns it; otherwise returns (s)
+
+~~~klipse
+(seqify 1)
+~~~
+
+~~~klipse
+(seqify [1 2 3])
+~~~
+  "
   [s]
   (if (seq? s) s (list s)))
 
-(defn edn-zip [root]
+(defn edn-zip
+  "A zipper for `edn`.
+
+~~~klipse
+  (edn-zip {:a {:b 1}, :c {:e 4, :d 2, :f {:g 8}}})
+~~~
+  "
+  [root]
   (zip/zipper
     #(or (vector? %) (map? %) (seq? %))
     (fn [node]
@@ -543,7 +582,12 @@
 
 (defn my-replace
   "Recursively transforms `form` by replacing keys in `smap` with their
-  values, spliced. The values in `smap` must be sequences. Like clojure.walk/prewalk-replace but supports list in values."
+  values, spliced. The values in `smap` must be sequences. Like clojure.walk/prewalk-replace but supports list in values.
+
+~~~klipse
+(my-replace '{go (go gadjett)} '(go (<! (timeout 100)) (go (<! timeout 0))))
+~~~
+  "
   [smap form]
   {:pre [(every? seq? (vals smap))]}
   (loop [loc (edn-zip form)]
@@ -585,9 +629,10 @@
 
 #?(:cljs
     (defn compact
-      "(clojurescript only)
+"
+(clojurescript only)
 
-      Compacts an expression by taking only the first `max-elements-in-coll` from collections and first `max-chars-in-str` from strings. Functions are displayed as \"lambda()\".
+Compacts an expression by taking only the first `max-elements-in-coll` from collections and first `max-chars-in-str` from strings. Functions are displayed as \"lambda()\".
 
 It works recursively. It is useful for logging and reporting.
 

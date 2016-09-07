@@ -132,8 +132,6 @@
          )
        (fact "map-with-index"
              (map-with-index ["a" "b" "c"] :idx :val) =>  '({:idx 0, :val "a"} {:idx 1, :val "b"} {:idx 2, :val "c"}))
-       (fact "map-to-object-with-index"
-             (map-to-object-with-index #(do {:val %}) ["a" "b" "c"]) => {0 {:val "a"}, 1 {:val "b"}, 2 {:val "c"}})
        (tabular
          (fact "map-reverse-hierarchy"
                (map-reverse-hierarchy ?in) => ?out)
