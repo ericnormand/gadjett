@@ -6,11 +6,6 @@
 (def infinity #?(:cljs js/Infinity
                  :clj Double/POSITIVE_INFINITY))
 
-#?(:cljs 
-    (defn to-regular-array[arr]
-      (IndexedSeq. arr 0 nil)))
-
-
 (defn =without-keys?
   "Compare two maps exclusing some keys
 
