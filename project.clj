@@ -9,7 +9,7 @@
                  [midje "1.8.3"]]
   :plugins [[lein-cljsbuild "1.1.2"]
             [lein-figwheel "0.5.0-6"]
-            [lein-codox "0.9.7"]
+            [lein-codox "0.11.0"]
             [lein-midje "3.2"]]
   :figwheel {:server-port 2512}
   :source-paths ["src" "script" "try"]
@@ -18,6 +18,7 @@
           :metadata {:doc/format :markdown}
           :source-paths ["src"]
           :output-path "docs"
+          :themes [:default :klipse]
           :html {:transforms
                  [[:body]
                   [:prepend
@@ -27,25 +28,7 @@
                      "(ns test.gadjett
                        (:require
                              [gadjett.linear :refer [intersection-point-func linear-equation intersection-point find-below-and-above-y linear-equation-func highest-below-x linear-y linear-x-func log-x-intersection-point interpolate-linear-y linear-y-func intersection-point-from-2-lines-points lowest-above-x find-keys-with-value log-x-linear-y lowest-above-y log-x-linear-equation calc-interpolated-values linear-x interpolate-linear-x below-and-above-y highest-below-y find-keys-with-values-in]]
-                         [gadjett.collections :refer [compact unflatten-keys sequence->map =without-keys? dissoc-in split-by-predicate-positions mapify submap? positions filter-map vec->map assoc-cyclic infinity subsequence edn-zip fix-blank-lines map-to-object deep-merge mean map-object-kv flatten-keys flatten-keys* compactize-map partition-between take-from-map map-with-index map-object-with-key deep-merge* range-till-end nearest-of-seq branches-and-leaves remove-blank-lines filter-branches out-of-bound? map-2d-vec split-by-predicate seqify abs append-cyclic map-2d-vec-kv max-and-min index-of nearest-of-ss map-reverse-hierarchy map-object my-replace]]))"]]]
-                  [:body]
-                  [:append
-                   [:link
-                    {:rel "stylesheet"
-                     :type "text/css"
-                     :href "https://storage.googleapis.com/app.klipse.tech/css/codemirror.css"}]
-                   [:script
-"window.klipse_settings = {
-  selector: '.klipse',
-  codemirror_options_in: {
-      lineWrapping: true,
-      autoCloseBrackets: true
-  },
-  codemirror_options_out: {
-      lineWrapping: true
-  }
-};"]
-                   [:script {:src "https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"}]]]}}
+                         [gadjett.collections :refer [compact unflatten-keys sequence->map =without-keys? dissoc-in split-by-predicate-positions mapify submap? positions filter-map vec->map assoc-cyclic infinity subsequence edn-zip fix-blank-lines map-to-object deep-merge mean map-object-kv flatten-keys flatten-keys* compactize-map partition-between take-from-map map-with-index map-object-with-key deep-merge* range-till-end nearest-of-seq branches-and-leaves remove-blank-lines filter-branches out-of-bound? map-2d-vec split-by-predicate seqify abs append-cyclic map-2d-vec-kv max-and-min index-of nearest-of-ss map-reverse-hierarchy map-object my-replace]]))"]]]]}}
   :cljsbuild {
               :builds
               {
