@@ -2,6 +2,7 @@
   :description "Inspector tools for clojurescript"
   :url "https://github.com/viebel/gadjett"
   :dependencies [[org.clojure/clojure "1.8.0"]
+                 [viebel/codox-klipse-theme "0.0.1"]
                  [org.clojure/clojurescript "1.9.227"]
                  [org.clojure/test.check "0.9.0"]
                  [com.velisco/herbert "0.7.0"]
