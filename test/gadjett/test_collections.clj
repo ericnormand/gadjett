@@ -201,13 +201,26 @@
          "  \n" ""
          "  \t\n" ""
          "   " ""
-         "   \t  " ""
-         "   \t   \naa\n  \nbb\n  " "aa\n  \nbb")
-      
+         "   \t  " "")
+        (tabular
+         (fact "remove-ending-comments"
+               (remove-ending-comments ?in) => ?out)
+         ?in ?out
+         ""                            ""
+         "aa\nbb"                      "aa\nbb"
+         ";aa\nbb"                     ";aa\nbb"
+         "aa\n;bb\ncc"                 "aa\n;bb\ncc"
+         "aa\n;bb"                     "aa"
+         "aa\n   ;bb"                  "aa"
+         "aa\n\t   ;bb"                "aa"
+         "aa\n;bb\n;cc;cc\n;;dd"       "aa"
+         "aa\n   ;  bb\n;cc;cc\n;;dd"  "aa"
+         "aa\nb;bb"                    "aa\nb;bb")
        (tabular
-         (fact "seqify" (seqify ?in) => ?out)
+         (fact "collify" (collify ?in) => ?out)
          ?in ?out
          '() '()
+         [] []
          '(nil) '(nil)
          'aa '(aa)
          '(aa) '(aa)))

@@ -529,19 +529,19 @@ Thanks to [Jay Fields](http://blog.jayfields.com/2010/09/clojure-flatten-keys.ht
       (map (partial map first) (partition-by second (map list coll switch)))))
 
 
-(defn seqify
-  "Ensure `s` is a sequence: if `s` is a sequence returns it; otherwise returns (s)
+(defn collify
+  "Ensure `s` is a collection: if `s` is a collection returns it; otherwise returns (s)
 
 ~~~klipse
-(seqify 1)
+(collify 1)
 ~~~
 
 ~~~klipse
-(seqify [1 2 3])
+(collify [1 2 3])
 ~~~
   "
   [s]
-  (if (seq? s) s (list s)))
+  (if (coll? s) s (list s)))
 
 (defn edn-zip
   "A zipper for `edn`.
@@ -590,6 +590,25 @@ Thanks to [Jay Fields](http://blog.jayfields.com/2010/09/clojure-flatten-keys.ht
       (zip/root loc)
       (recur (zip/next (loc-my-replace smap loc))))))
 
+(defn- comment? [s]
+  (re-matches #"\s*;.*" s))
+
+(defn remove-ending-comments
+  "Removes comment lines from the end.
+
+~~~klipse
+  ; we use (char 10) for end-of-line due to technical issues with string manipulation with `codox`
+  (let [lines (clojure.string/join (char 10) [\"  \", \"aa\", \"  \", \"bb\", \" \t  \"])]
+  (remove-ending-comments lines))
+~~~
+  "
+  [s]
+  (->> s
+    split-lines
+    reverse
+    (drop-while comment?)
+    reverse
+    (join "\n")))
 (defn fix-blank-lines
   "Removes blank lines from the begining and from the end (not from the middle)
 

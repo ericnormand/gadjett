@@ -1,4 +1,4 @@
-(defproject viebel/gadjett "0.3.0"
+(defproject viebel/gadjett "0.3.2"
   :description "Inspector tools for clojurescript"
   :url "https://github.com/viebel/gadjett"
   :dependencies [[org.clojure/clojure "1.8.0"]
@@ -10,7 +10,7 @@
                  [midje "1.8.3"]]
   :plugins [[lein-cljsbuild "1.1.2"]
             [lein-figwheel "0.5.0-6"]
-            [lein-codox "0.10.0"]
+            [lein-codox "0.10.1"]
             [lein-midje "3.2"]]
   :figwheel {:server-port 2512}
   :source-paths ["src" "script" "try"]
@@ -19,7 +19,8 @@
           :metadata {:doc/format :markdown}
           :source-paths ["src"]
           :output-path "docs"
-          :themes [:default [:klipse {:klipse/external-libs  "https://raw.githubusercontent.com/viebel/gadjett/master/src/"
+          :themes [:default [:klipse {:kkklipse/selector ".clojure",
+                                      :klipse/external-libs  "https://raw.githubusercontent.com/viebel/gadjett/master/src/"
                                       :klipse/require-statement "(ns test.gadjett
                                                          (:require
                                                          [gadjett.linear :refer [intersection-point-func linear-equation intersection-point find-below-and-above-y linear-equation-func highest-below-x linear-y linear-x-func log-x-intersection-point interpolate-linear-y linear-y-func intersection-point-from-2-lines-points lowest-above-x find-keys-with-value log-x-linear-y lowest-above-y log-x-linear-equation calc-interpolated-values linear-x interpolate-linear-x below-and-above-y highest-below-y find-keys-with-values-in]]
