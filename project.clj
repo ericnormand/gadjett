@@ -16,15 +16,15 @@
   :source-paths ["src" "script" "try"]
   :codox {
           :language :clojurescript
+          :source-uri "https://github.com/viebel/gadjett/blob/master/{filepath}#L{line}"
           :metadata {:doc/format :markdown}
           :source-paths ["src"]
           :output-path "docs"
-          :themes [:default [:klipse {:klipse/selector ".clojure",
-                                      :klipse/external-libs  "https://raw.githubusercontent.com/viebel/gadjett/master/src/"
+          :themes [:default [:klipse {:klipse/external-libs  "https://raw.githubusercontent.com/viebel/gadjett/master/src/"
                                       :klipse/require-statement "(ns test.gadjett
                                                          (:require
-                                                         [gadjett.linear :refer [intersection-point-func linear-equation intersection-point find-below-and-above-y linear-equation-func highest-below-x linear-y linear-x-func log-x-intersection-point interpolate-linear-y linear-y-func intersection-point-from-2-lines-points lowest-above-x find-keys-with-value log-x-linear-y lowest-above-y log-x-linear-equation calc-interpolated-values linear-x interpolate-linear-x below-and-above-y highest-below-y find-keys-with-values-in]]
-                                                         [gadjett.collections :refer [compact unflatten-keys sequence->map =without-keys? dissoc-in split-by-predicate-positions mapify submap? positions filter-map vec->map assoc-cyclic infinity subsequence edn-zip fix-blank-lines map-to-object deep-merge mean map-object-kv flatten-keys flatten-keys* compactize-map partition-between take-from-map map-with-index map-object-with-key deep-merge* range-till-end nearest-of-seq branches-and-leaves remove-blank-lines filter-branches out-of-bound? map-2d-vec split-by-predicate seqify abs append-cyclic map-2d-vec-kv max-and-min index-of nearest-of-ss map-reverse-hierarchy map-object my-replace]]))"}]]}
+                                                         [gadjett.linear :as glinear :refer [intersection-point-func linear-equation intersection-point find-below-and-above-y linear-equation-func highest-below-x linear-y linear-x-func log-x-intersection-point interpolate-linear-y linear-y-func intersection-point-from-2-lines-points lowest-above-x find-keys-with-value log-x-linear-y lowest-above-y log-x-linear-equation calc-interpolated-values linear-x interpolate-linear-x below-and-above-y highest-below-y find-keys-with-values-in]]
+                                                         [gadjett.collections :as gcoll :refer [compact unflatten-keys sequence->map =without-keys? dissoc-in split-by-predicate-positions mapify submap? positions filter-map vec->map assoc-cyclic infinity subsequence edn-zip fix-blank-lines map-to-object deep-merge mean map-object-kv flatten-keys flatten-keys* compactize-map partition-between take-from-map map-with-index map-object-with-key deep-merge* range-till-end nearest-of-seq branches-and-leaves remove-ending-comments remove-blank-lines filter-branches out-of-bound? map-2d-vec split-by-predicate collify abs append-cyclic map-2d-vec-kv max-and-min index-of nearest-of-ss map-reverse-hierarchy map-object my-replace]]))"}]]}
   :cljsbuild {
               :builds
               {

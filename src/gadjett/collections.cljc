@@ -598,7 +598,7 @@ Thanks to [Jay Fields](http://blog.jayfields.com/2010/09/clojure-flatten-keys.ht
 
 ~~~klipse
   ; we use (char 10) for end-of-line due to technical issues with string manipulation with `codox`
-  (let [lines (clojure.string/join (char 10) [\"  \", \"aa\", \"  \", \"bb\", \" \t  \"])]
+  (let [lines (clojure.string/join (char 10) [\"aa\", \"  \", \"bb\" \"; this comment should not appear\"])]
   (remove-ending-comments lines))
 ~~~
   "
