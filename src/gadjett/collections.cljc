@@ -1,10 +1,62 @@
 (ns gadjett.collections
-  (:require [clojure.set]
+  (:require [clojure.set :refer [union]]
+            [clojure.spec :as s]
+            #?(:clj [clojure.spec.gen :as gen]
+               :cljs [clojure.spec.impl.gen :as gen])
+            [clojure.spec.test :as stest]
             [clojure.string :refer [blank? join split-lines]]
             [clojure.zip :as zip]))
 
+#?(:clj 
+   (def isNaN Double/isNaN)
+   :cljs
+   (def isNaN js/isNaN))
+
+
+
+(s/def ::number (s/double-in :infinite? false :NaN? false))
+(s/def ::not-nan-number (s/and number?) (s/double-in :NaN? false))
+(s/def ::map (s/every-kv any? any?))
+(s/def ::predicate (s/with-gen fn?
+                     #(s/gen #{int? string?})))
+
 (def infinity #?(:cljs js/Infinity
                  :clj Double/POSITIVE_INFINITY))
+
+(defn abs
+  "Absolute value of a number
+
+~~~klipse
+  (map abs (range -5 5))
+~~~
+
+"
+[x]
+  (max x (- x)))
+
+(defn- scale [x y]
+  (if (or (zero? x) (zero? y))
+    1
+    (abs x)))
+
+(defn almost=
+  ([x y] (almost= x y 0.00001))
+  ([x y epsilon] (or (= x y)
+                     (<= (abs (- x y))
+                         (* (scale x y) epsilon)))))
+
+
+(defn- =set [a b]
+  (= (into #{} a)
+     (into #{} b)))
+
+(s/def ::list-of-keys seqable?)
+
+(s/fdef =without-keys? :args (s/cat :a map? :b map? :keys ::list-of-keys)
+        :ret map?
+        :fn (s/and #(=set (-> % :args :a keys)
+                          (concat (-> % :args :b keys)
+                                  (-> % :args :keys keys)))))
 
 (defn =without-keys?
   "Compare two maps exclusing some keys
@@ -107,20 +159,30 @@
     (/ (apply + x)
        (count x))))
 
+(s/fdef mean
+        :args (s/cat :x (s/coll-of ::number))
+        :ret number?
+        :fn (s/and #(almost= (* (-> % :ret)
+                                (-> % :args :x count))
+                             (apply + (-> % :args :x)))))
+
 (defn sequence->map
   "Converts a sequence into a map where the keys are the indexes of the elements in the sequence.
 
-~~~klipse
+  ~~~klipse
   (sequence->map [10 20 30])
-~~~
+  ~~~
   "
   [s]
   (zipmap (range (count s)) s))
 
-(defn- range-with-end
+(defn- range-with-end [& args]
+  (apply )
   ([end] [end (range end)])
   ([start end] [end (range start end)])
   ([start end steps] [end (range start end steps)]))
+
+(range 10)
 
 (defn range-till-end
   "Like `range` but including the `end`.
@@ -139,8 +201,48 @@
 
   "
   [& args]
-  (let [[end lis] (apply range-with-end args)]
-    (concat lis [end])))
+  (let [{:keys [start end steps]} (s/conform ::range-till-end args)]
+    (range start (+ steps end) steps)))
+
+
+(s/def ::non-neg-int (s/and int? #(>= % 0)))
+
+(s/def ::range-till-end (s/and (s/cat :start (s/? number?)
+                            :end number?
+                            :steps (s/? number?))))
+
+(s/conform (s/or :empty (s/cat)
+                 :one   (s/cat :end ::not-nan-number)
+                 :two   (s/cat :start ::not-nan-number
+                               :end ::not-nan-number)
+                 :three (s/cat :start ::not-nan-number
+                               :end ::not-nan-number
+                               :step ::not-nan-number)) [1 2])
+
+(s/conform number? Double/NaN)
+(s/def ::aa number?)
+(s/describe ::aa)
+
+
+(s/fdef range-till-end
+        :args ::range-till-end
+        :ret (s/coll-of number?)
+        :fn (fn [{:keys [args ret]}]
+              (let [{:keys [start end steps] :or {start 0 steps 1}} args]
+                (= (count ret) (-> (- end start)
+                                   int
+                                   (/ steps)
+                                   inc)))))
+(range -1 2 2)
+(range Double/NaN)
+
+(comment
+  (stest/check `append-cyclic {:clojure.spec.test.check/opts {:num-tests 10}})
+  (stest/check `filter-map {:clojure.spec.test.check/opts {:num-tests 10}})
+  (s/exercise-fn `range-till-end)
+  (s/exercise (:args (s/get-spec `range-till-end)))
+  (stest/abbrev-result (first (stest/check `range-till-end #_{:clojure.spec.test.check/opts {:num-tests 10}})))
+  (stest/check `range-till-end))
 
 (defn append-cyclic
   "Appends an element to a list popping out the first element.
@@ -157,6 +259,14 @@
   (if (seq lst)
     (concat (rest lst) [a])
     lst))
+
+(s/fdef append-cyclic
+        :args (s/cat :coll (s/coll-of any?)
+                     :elem any?)
+        :ret  (s/coll-of any?)
+        :fn #(= (count (-> % :args :coll)) (count (-> % :ret))))
+
+
 
 (defn assoc-cyclic
   "Assoc a key-value pair to a map popping out an element of the map.
@@ -203,7 +313,7 @@
   (into {} (remove (comp nil? second) m)))
 
 (defn filter-map
-  "Run a function on the elements of a map and keep only those elements for which the function returns true
+  "Run a function on the values of a map and keep only the (key, value) pairs for which the function returns true
   
 ~~~klipse
   (filter-map even? {:a 1 :b 2 :c 3})
@@ -212,16 +322,10 @@
   [f m]
   (into {} (filter (comp f val) m)))
 
-(defn abs
-  "Absolute value of a number
 
-~~~klipse
-  (map abs (range -5 5))
-~~~
 
-"
-[x]
-  (max x (- x)))
+
+
 
 (defn nearest-of-ss
   "Returns the nearest number to `x` of a sorted set
@@ -678,4 +782,8 @@ Default settings:
         :else (str "***[" (type x) "]***")))
     )
 
-
+(s/fdef filter-map
+        :args (s/cat :fn ::predicate
+                     :m  ::map)
+        :ret ::map
+        :fn  #(submap? (:ret %) (-> % :args :m)))
