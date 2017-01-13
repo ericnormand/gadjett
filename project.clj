@@ -1,13 +1,13 @@
 (defproject viebel/gadjett "0.3.2"
   :description "Inspector tools for clojurescript"
   :url "https://github.com/viebel/gadjett"
-  :dependencies [[org.clojure/clojure "1.8.0"]
-                 [viebel/codox-klipse-theme "0.0.3"]
+  :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
+                 [viebel/codox-klipse-theme "0.0.4"]
                  [org.clojure/clojurescript "1.9.227"]
                  [org.clojure/test.check "0.9.0"]
                  [com.velisco/herbert "0.7.0"]
                  [figwheel-sidecar "0.5.6"]
-                 [midje "1.8.3"]]
+                 [midje "1.9.0-alpha6"]]
   :plugins [[lein-cljsbuild "1.1.2"]
             [lein-figwheel "0.5.0-6"]
             [lein-codox "0.10.2"]
