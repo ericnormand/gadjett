@@ -71,6 +71,13 @@
          {:a {:b {1 'a'}}} nil {:a {:b {1 'a'}}}
          )
        (tabular
+         (fact "deep-merge-with" (deep-merge-with concat ?a ?b) => ?res)
+         ?a ?b ?res
+         {:a []} {} {:a []}
+         {:a [1]} {:a [2]} {:a '(1 2)}
+         {:x {:a [1]}} {:x {:a [2]}} {:x {:a '(1 2)}}
+         )
+       (tabular
          (fact "unflatten-keys" (unflatten-keys ?m) => ?res)
          ?m ?f ?res
          {[:a :b :c] "1" [:d :e :f] true} {:a {:b {:c "1"}} :d {:e {:f true}}}
