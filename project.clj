@@ -1,4 +1,4 @@
-(defproject viebel/gadjett "0.3.3"
+(defproject viebel/gadjett "0.3.4"
   :description "Inspector tools for clojurescript"
   :url "https://github.com/viebel/gadjett"
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
@@ -8,7 +8,7 @@
                  [com.velisco/herbert "0.7.0"]
                  [figwheel-sidecar "0.5.6"]
                  [midje "1.9.0-alpha6"]]
-  :plugins [[lein-cljsbuild "1.1.2"]
+  :plugins [[lein-cljsbuild "1.1.5"]
             [lein-figwheel "0.5.0-6"]
             [lein-codox "0.10.2"]
             [lein-midje "3.2"]]

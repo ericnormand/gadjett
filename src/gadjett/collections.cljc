@@ -1,4 +1,3 @@
-
 (ns gadjett.collections
   (:require [clojure.set :refer [union]]
             [clojure.spec :as s]
@@ -217,11 +216,6 @@
                                :end ::not-nan-number
                                :step ::not-nan-number)) [1 2])
 
-(s/conform number? Double/NaN)
-(s/def ::aa number?)
-(s/describe ::aa)
-
-
 (s/fdef range-till-end
         :args ::range-till-end
         :ret (s/coll-of number?)
@@ -231,9 +225,6 @@
                                    int
                                    (/ steps)
                                    inc)))))
-(range -1 2 2)
-(range Double/NaN)
-
 (comment
   (stest/check `append-cyclic {:clojure.spec.test.check/opts {:num-tests 10}})
   (stest/check `filter-map {:clojure.spec.test.check/opts {:num-tests 10}})
