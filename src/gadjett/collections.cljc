@@ -111,7 +111,6 @@
   [f m]
   (vec->map (map-2d-vec f m)))
 
-
 (defn map-object-with-key
   "Returns a map with the same keys as `m` and with the values transformed by `f`. `f` must be a `2-ary` function that receives the key and the value as arguments.
 
@@ -131,7 +130,6 @@
 "
 [fk fv m]
   (vec->map (map-2d-vec-kv fk fv m)))
-
 
 (defn map-reverse-hierarchy
   "Turns a hash map inside out.
@@ -799,3 +797,17 @@ Default settings:
                      :m  ::map)
         :ret ::map
         :fn  #(submap? (:ret %) (-> % :args :m)))
+
+
+(defn map-nested-vals
+  "Map the values of a nested map.
+~~~klipse
+  (map-nested-vals first {:a [1 2 3]
+                          :b {:c [4 5 6]}})
+~~~
+  "
+  [f m]
+  (->> m
+       flatten-keys
+       (map-object f)
+       unflatten-keys))
