@@ -8,6 +8,10 @@
 (facts "Collections (1)"
        (fact "sequence->map"
              (sequence->map  [10 20 30]) => {0 10 1 20 2 30})
+       (fact "sequence-of-maps->map"
+             (sequence-of-maps->map [{:key :price :value 19}
+                                     {:key :quantity :value 100}]
+                                    :key :value) => {:price 19 :quantity 100})
        (tabular
          (fact "partition-between" (partition-between ?pred ?coll) => ?res)
          ?pred ?coll ?res

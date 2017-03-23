@@ -142,6 +142,24 @@
   [s]
   (zipmap (range (count s)) s))
 
+(defn sequence-of-maps->map
+  "Converts a sequence of maps into a map where:
+
+  - the keys are extracted from the maps using `key-fn`
+  - the vals extracted from the maps using `val-fn`  
+  
+  ~~~klipse
+  (sequence-of-maps->map [{:key :price :value 19}
+                          {:key :quantity :value 100}]
+                          :key :value)
+  ~~~
+  "
+  [coll key-fn val-fn]
+  (reduce (fn [res m]
+            (assoc res (key-fn m) (val-fn m)))
+          {}
+          coll))
+
 (defn- range-with-end
   ([end] [end (range end)])
   ([start end] [end (range start end)])
