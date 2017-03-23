@@ -71,6 +71,14 @@
          {:a {:b {1 'a'}}} nil {:a {:b {1 'a'}}}
          )
        (tabular
+        (fact "join-them a single collection" (join-them [?fn] [?coll]) => ?coll)
+        ?fn ?coll 
+        :a [{:a 1 :b 2}]) 
+       (tabular
+        (fact "join-them - two  collections" (join-them [?fn-a ?fn-b] [?a ?b]) => ?res)
+        ?a            ?fn-a ?b            ?fn-b ?res
+        [{:a 1 :b 2}] :a    [{:x 1 :y 2}] :x    [{:x 1 :a 1 :b 2 :y 2}])       
+       (tabular
          (fact "deep-merge-with" (deep-merge-with concat ?a ?b) => ?res)
          ?a ?b ?res
          {:a []} {} {:a []}

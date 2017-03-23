@@ -1,4 +1,5 @@
 echo "building the cache"
+rm -rf docs/cache-cljs 
 lumo -k docs/cache-cljs -c`lein classpath` -e "(require 'gadjett.all)"
 echo "copying the sources"
 cp -r src docs/src

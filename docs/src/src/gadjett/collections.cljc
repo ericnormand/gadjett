@@ -732,3 +732,18 @@ Default settings:
        flatten-keys
        (map-object f)
        unflatten-keys))
+
+(defn join-them
+  "Join a sequence of collections `colls` according to function equality.
+   `fns` - a sequence of functions
+   `colls` - a sequence of collections
+~~~klipse
+(let [a [{:id 1 :price 19} {:id 2 :price 3}]
+        b [{:guid 1 :quantity 13}]]
+     (join-them [:id :guid] [a b]))
+~~~
+"
+  [fns colls]
+  (->> (map mapify fns colls)
+       (apply deep-merge)
+       vals))

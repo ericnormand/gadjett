@@ -1523,3 +1523,19 @@ return gadjett.collections.unflatten_keys.call(null,gadjett.collections.map_obje
 }); return (
 new cljs.core.Var(function(){return gadjett.collections.map_nested_vals;},new cljs.core.Symbol("gadjett.collections","map-nested-vals","gadjett.collections/map-nested-vals",(-493795588),null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"ns","ns",(441598760)),new cljs.core.Keyword(null,"name","name",(1843675177)),new cljs.core.Keyword(null,"file","file",(-1269645878)),new cljs.core.Keyword(null,"end-column","end-column",(1425389514)),new cljs.core.Keyword(null,"column","column",(2078222095)),new cljs.core.Keyword(null,"line","line",(212345235)),new cljs.core.Keyword(null,"end-line","end-line",(1837326455)),new cljs.core.Keyword(null,"arglists","arglists",(1661989754)),new cljs.core.Keyword(null,"doc","doc",(1913296891)),new cljs.core.Keyword(null,"test","test",(577538877))],[new cljs.core.Symbol(null,"gadjett.collections","gadjett.collections",(540992196),null),new cljs.core.Symbol(null,"map-nested-vals","map-nested-vals",(-1258211632),null),"gadjett/collections.cljc",(22),(1),(723),(723),cljs.core.list(new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"f","f",(43394975),null),new cljs.core.Symbol(null,"m","m",(-1021758608),null)], null)),"Map the values of a nested map.\n~~~klipse\n  (map-nested-vals first {:a [1 2 3]\n                          :b {:c [4 5 6]}})\n~~~\n  ",(cljs.core.truth_(gadjett.collections.map_nested_vals)?gadjett.collections.map_nested_vals.cljs$lang$test:null)])));})()
 ;
+/**
+ * Join a sequence of collections `colls` according to function equality.
+ * `fns` - a sequence of functions
+ * `colls` - a sequence of collections
+ * ~~~klipse
+ * (let [a [{:id 1 :price 19} {:id 2 :price 3}]
+ *      b [{:guid 1 :quantity 13}]]
+ *   (join-them [:id :guid] [a b]))
+ * ~~~
+ */
+(function (){
+gadjett.collections.join_them = (function gadjett$collections$join_them(fns,colls){
+return cljs.core.vals.call(null,cljs.core.apply.call(null,gadjett.collections.deep_merge,cljs.core.map.call(null,gadjett.collections.mapify,fns,colls)));
+}); return (
+new cljs.core.Var(function(){return gadjett.collections.join_them;},new cljs.core.Symbol("gadjett.collections","join-them","gadjett.collections/join-them",(-1686805658),null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"ns","ns",(441598760)),new cljs.core.Keyword(null,"name","name",(1843675177)),new cljs.core.Keyword(null,"file","file",(-1269645878)),new cljs.core.Keyword(null,"end-column","end-column",(1425389514)),new cljs.core.Keyword(null,"column","column",(2078222095)),new cljs.core.Keyword(null,"line","line",(212345235)),new cljs.core.Keyword(null,"end-line","end-line",(1837326455)),new cljs.core.Keyword(null,"arglists","arglists",(1661989754)),new cljs.core.Keyword(null,"doc","doc",(1913296891)),new cljs.core.Keyword(null,"test","test",(577538877))],[new cljs.core.Symbol(null,"gadjett.collections","gadjett.collections",(540992196),null),new cljs.core.Symbol(null,"join-them","join-them",(-1209887878),null),"gadjett/collections.cljc",(16),(1),(736),(736),cljs.core.list(new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"fns","fns",(-1469296983),null),new cljs.core.Symbol(null,"colls","colls",(-397642425),null)], null)),"Join a sequence of collections `colls` according to function equality.\n   `fns` - a sequence of functions\n   `colls` - a sequence of collections\n~~~klipse\n(let [a [{:id 1 :price 19} {:id 2 :price 3}]\n        b [{:guid 1 :quantity 13}]]\n     (join-them [:id :guid] [a b]))\n~~~\n",(cljs.core.truth_(gadjett.collections.join_them)?gadjett.collections.join_them.cljs$lang$test:null)])));})()
+;

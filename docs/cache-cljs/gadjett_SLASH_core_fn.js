@@ -16,14 +16,14 @@ new cljs.core.Var(function(){return gadjett.core_fn.settings;},new cljs.core.Sym
 (function (){
 gadjett.core_fn.settings_BANG_ = (function gadjett$core_fn$settings_BANG_(var_args){
 var args__23374__auto__ = [];
-var len__23372__auto___26 = arguments.length;
-var i__23373__auto___27 = (0);
+var len__23372__auto___286 = arguments.length;
+var i__23373__auto___287 = (0);
 while(true){
-if((i__23373__auto___27 < len__23372__auto___26)){
-args__23374__auto__.push((arguments[i__23373__auto___27]));
+if((i__23373__auto___287 < len__23372__auto___286)){
+args__23374__auto__.push((arguments[i__23373__auto___287]));
 
-var G__28 = (i__23373__auto___27 + (1));
-i__23373__auto___27 = G__28;
+var G__288 = (i__23373__auto___287 + (1));
+i__23373__auto___287 = G__288;
 continue;
 } else {
 }
@@ -36,17 +36,17 @@ return gadjett.core_fn.settings_BANG_.cljs$core$IFn$_invoke$arity$variadic(argse
 new cljs.core.Var(function(){return gadjett.core_fn.settings_BANG_;},new cljs.core.Symbol("gadjett.core-fn","settings!","gadjett.core-fn/settings!",(-1128653184),null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"ns","ns",(441598760)),new cljs.core.Keyword(null,"name","name",(1843675177)),new cljs.core.Keyword(null,"file","file",(-1269645878)),new cljs.core.Keyword(null,"end-column","end-column",(1425389514)),new cljs.core.Keyword(null,"top-fn","top-fn",(-2056129173)),new cljs.core.Keyword(null,"column","column",(2078222095)),new cljs.core.Keyword(null,"line","line",(212345235)),new cljs.core.Keyword(null,"end-line","end-line",(1837326455)),new cljs.core.Keyword(null,"arglists","arglists",(1661989754)),new cljs.core.Keyword(null,"doc","doc",(1913296891)),new cljs.core.Keyword(null,"test","test",(577538877))],[new cljs.core.Symbol(null,"gadjett.core-fn","gadjett.core-fn",(-807586245),null),new cljs.core.Symbol(null,"settings!","settings!",(1535826685),null),"gadjett/core_fn.cljc",(16),new cljs.core.PersistentArrayMap(null, 5, [new cljs.core.Keyword(null,"variadic","variadic",(882626057)),true,new cljs.core.Keyword(null,"max-fixed-arity","max-fixed-arity",(-690205543)),(0),new cljs.core.Keyword(null,"method-params","method-params",(-980792179)),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.list(new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"keys","keys",(1068423698)),cljs.core.PersistentVector.EMPTY,new cljs.core.Keyword(null,"as","as",(1148689641)),new cljs.core.Symbol(null,"args","args",(-1338879193),null)], null))], null),new cljs.core.Keyword(null,"arglists","arglists",(1661989754)),cljs.core.list(new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"&","&",(-2144855648),null),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"keys","keys",(1068423698)),cljs.core.PersistentVector.EMPTY,new cljs.core.Keyword(null,"as","as",(1148689641)),new cljs.core.Symbol(null,"args","args",(-1338879193),null)], null)], null)),new cljs.core.Keyword(null,"arglists-meta","arglists-meta",(1944829838)),cljs.core.list(null)], null),(1),(13),(13),cljs.core.list(new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"&","&",(-2144855648),null),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"keys","keys",(1068423698)),cljs.core.PersistentVector.EMPTY,new cljs.core.Keyword(null,"as","as",(1148689641)),new cljs.core.Symbol(null,"args","args",(-1338879193),null)], null)], null)),null,(cljs.core.truth_(gadjett.core_fn.settings_BANG_)?gadjett.core_fn.settings_BANG_.cljs$lang$test:null)])));})()
 ;
 
-gadjett.core_fn.settings_BANG_.cljs$core$IFn$_invoke$arity$variadic = (function (p__23){
-var map__24 = p__23;
-var map__24__$1 = ((((!((map__24 == null)))?((((map__24.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__24.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.call(null,cljs.core.hash_map,map__24):map__24);
-var args = map__24__$1;
+gadjett.core_fn.settings_BANG_.cljs$core$IFn$_invoke$arity$variadic = (function (p__283){
+var map__284 = p__283;
+var map__284__$1 = ((((!((map__284 == null)))?((((map__284.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__284.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.call(null,cljs.core.hash_map,map__284):map__284);
+var args = map__284__$1;
 return gadjett.core_fn.settings = cljs.core.merge.call(null,gadjett.core_fn.settings,args);
 });
 
 gadjett.core_fn.settings_BANG_.cljs$lang$maxFixedArity = (0);
 
-gadjett.core_fn.settings_BANG_.cljs$lang$applyTo = (function (seq22){
-return gadjett.core_fn.settings_BANG_.cljs$core$IFn$_invoke$arity$variadic(cljs.core.seq.call(null,seq22));
+gadjett.core_fn.settings_BANG_.cljs$lang$applyTo = (function (seq282){
+return gadjett.core_fn.settings_BANG_.cljs$core$IFn$_invoke$arity$variadic(cljs.core.seq.call(null,seq282));
 });
 
 new cljs.core.Var(function(){return gadjett.core_fn.settings_BANG_;},new cljs.core.Symbol("gadjett.core-fn","settings!","gadjett.core-fn/settings!",(-1128653184),null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"ns","ns",(441598760)),new cljs.core.Keyword(null,"name","name",(1843675177)),new cljs.core.Keyword(null,"file","file",(-1269645878)),new cljs.core.Keyword(null,"end-column","end-column",(1425389514)),new cljs.core.Keyword(null,"top-fn","top-fn",(-2056129173)),new cljs.core.Keyword(null,"column","column",(2078222095)),new cljs.core.Keyword(null,"line","line",(212345235)),new cljs.core.Keyword(null,"end-line","end-line",(1837326455)),new cljs.core.Keyword(null,"arglists","arglists",(1661989754)),new cljs.core.Keyword(null,"doc","doc",(1913296891)),new cljs.core.Keyword(null,"test","test",(577538877))],[new cljs.core.Symbol(null,"gadjett.core-fn","gadjett.core-fn",(-807586245),null),new cljs.core.Symbol(null,"settings!","settings!",(1535826685),null),"gadjett/core_fn.cljc",(16),new cljs.core.PersistentArrayMap(null, 5, [new cljs.core.Keyword(null,"variadic","variadic",(882626057)),true,new cljs.core.Keyword(null,"max-fixed-arity","max-fixed-arity",(-690205543)),(0),new cljs.core.Keyword(null,"method-params","method-params",(-980792179)),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.list(new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"keys","keys",(1068423698)),cljs.core.PersistentVector.EMPTY,new cljs.core.Keyword(null,"as","as",(1148689641)),new cljs.core.Symbol(null,"args","args",(-1338879193),null)], null))], null),new cljs.core.Keyword(null,"arglists","arglists",(1661989754)),cljs.core.list(new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"&","&",(-2144855648),null),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"keys","keys",(1068423698)),cljs.core.PersistentVector.EMPTY,new cljs.core.Keyword(null,"as","as",(1148689641)),new cljs.core.Symbol(null,"args","args",(-1338879193),null)], null)], null)),new cljs.core.Keyword(null,"arglists-meta","arglists-meta",(1944829838)),cljs.core.list(null)], null),(1),(13),(13),cljs.core.list(new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"&","&",(-2144855648),null),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"keys","keys",(1068423698)),cljs.core.PersistentVector.EMPTY,new cljs.core.Keyword(null,"as","as",(1148689641)),new cljs.core.Symbol(null,"args","args",(-1338879193),null)], null)], null)),null,(cljs.core.truth_(gadjett.core_fn.settings_BANG_)?gadjett.core_fn.settings_BANG_.cljs$lang$test:null)]));
@@ -54,8 +54,8 @@ new cljs.core.Var(function(){return gadjett.core_fn.settings_BANG_;},new cljs.co
 gadjett.core_fn.add_event_and_filter = (function gadjett$core_fn$add_event_and_filter(timestamp_msec,events){
 var timeslot = new cljs.core.Keyword(null,"timeslot-function-calls-msec","timeslot-function-calls-msec",(189712759)).cljs$core$IFn$_invoke$arity$1(gadjett.core_fn.settings);
 return cljs.core.cons.call(null,timestamp_msec,cljs.core.take_while.call(null,((function (timeslot){
-return (function (p1__1_SHARP_){
-return (p1__1_SHARP_ > (timestamp_msec - timeslot));
+return (function (p1__16_SHARP_){
+return (p1__16_SHARP_ > (timestamp_msec - timeslot));
 });})(timeslot))
 ,events));
 }); return (
@@ -89,23 +89,23 @@ new cljs.core.Var(function(){return gadjett.core_fn.sort_history;},new cljs.core
  */
 (function (){
 gadjett.core_fn.the_history = (function gadjett$core_fn$the_history(var_args){
-var args29 = [];
-var len__23372__auto___32 = arguments.length;
-var i__23373__auto___33 = (0);
+var args289 = [];
+var len__23372__auto___292 = arguments.length;
+var i__23373__auto___293 = (0);
 while(true){
-if((i__23373__auto___33 < len__23372__auto___32)){
-args29.push((arguments[i__23373__auto___33]));
+if((i__23373__auto___293 < len__23372__auto___292)){
+args289.push((arguments[i__23373__auto___293]));
 
-var G__34 = (i__23373__auto___33 + (1));
-i__23373__auto___33 = G__34;
+var G__294 = (i__23373__auto___293 + (1));
+i__23373__auto___293 = G__294;
 continue;
 } else {
 }
 break;
 }
 
-var G__31 = args29.length;
-switch (G__31) {
+var G__291 = args289.length;
+switch (G__291) {
 case (1):
 return gadjett.core_fn.the_history.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -115,7 +115,7 @@ return gadjett.core_fn.the_history.cljs$core$IFn$_invoke$arity$0();
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args29.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args289.length)].join('')));
 
 }
 }); return (
