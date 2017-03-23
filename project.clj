@@ -2,7 +2,7 @@
   :description "Inspector tools for clojurescript"
   :url "https://github.com/viebel/gadjett"
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
-                 [viebel/codox-klipse-theme "0.0.4"]
+                 [viebel/codox-klipse-theme "0.0.5"]
                  [org.clojure/clojurescript "1.9.227"]
                  [org.clojure/test.check "0.9.0"]
                  [com.velisco/herbert "0.7.0"]
@@ -20,7 +20,8 @@
           :metadata {:doc/format :markdown}
           :source-paths ["src"]
           :output-path "docs"
-          :themes [:default [:klipse {:klipse/external-libs  "https://raw.githubusercontent.com/viebel/gadjett/master/src/"
+          :themes [:default [:klipse {:klipse/external-libs  "src"
+                                      :klipse/bundled-ns-ignore-regexp #"/gadjett\..*/"
                                       :klipse/require-statement "(ns test.gadjett
                                                          (:require
                                                          [gadjett.linear :as glinear :refer [intersection-point-func linear-equation intersection-point find-below-and-above-y linear-equation-func highest-below-x linear-y linear-x-func log-x-intersection-point interpolate-linear-y linear-y-func intersection-point-from-2-lines-points lowest-above-x find-keys-with-value log-x-linear-y lowest-above-y log-x-linear-equation calc-interpolated-values linear-x interpolate-linear-x below-and-above-y highest-below-y find-keys-with-values-in]]
