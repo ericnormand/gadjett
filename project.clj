@@ -22,6 +22,9 @@
           :output-path "docs"
           :themes [:default [:klipse {:klipse/external-libs  "src"
                                       :klipse/bundled-ns-ignore-regexp #"/gadjett\..*/"
+                                      :klipse/cached-macro-ns-regexp #"/gadjett\..*/"
+                                      :klipse/cached-ns-regexp #"/gadjett\..*/"                                      
+                                      :klipse/cached-ns-root "./cache-cljs"
                                       :klipse/require-statement "(ns test.gadjett
                                                          (:require
                                                          [gadjett.linear :as glinear :refer [intersection-point-func linear-equation intersection-point find-below-and-above-y linear-equation-func highest-below-x linear-y linear-x-func log-x-intersection-point interpolate-linear-y linear-y-func intersection-point-from-2-lines-points lowest-above-x find-keys-with-value log-x-linear-y lowest-above-y log-x-linear-equation calc-interpolated-values linear-x interpolate-linear-x below-and-above-y highest-below-y find-keys-with-values-in]]

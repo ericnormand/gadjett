@@ -1,0 +1,6 @@
+echo "building the cache"
+lumo -k docs/cache-cljs -c`lein classpath` -e "(require 'gadjett.all)"
+echo "copying the sources"
+cp -r src docs/src
+echo "running 'lein codox'"
+lein codox
