@@ -1,5 +1,6 @@
 (ns gadjett.collections
   (:require [clojure.set :refer [union]]
+            [clojure.walk :refer [postwalk]]
             [clojure.string :refer [blank? join split-lines]]
             [clojure.zip :as zip]))
 
@@ -244,6 +245,24 @@
   "
   [m]
   (into {} (remove (comp nil? second) m)))
+
+
+;; http://stackoverflow.com/a/34221816/813665
+(defn compactize-map-recursive
+  "Remove from a map the entries whose values are `nil`.
+  If all the values of a nested map are `nil` the entrie is removed.
+~~~klipse
+
+(compactize-map-recursive {:x 1 :z {:a nil} :a {:b nil :c 2 :d {:e nil :f 2}}})
+~~~
+  "
+    [m]
+  (let [f (fn [x]
+            (if (map? x)
+              (let [kvs (filter (comp not nil? second) x)]
+                (if (empty? kvs) nil (into {} kvs)))
+              x))]
+    (postwalk f m)))
 
 (defn filter-map
   "Run a function on the values of a map and keep only the (key, value) pairs for which the function returns true
@@ -765,3 +784,20 @@ Default settings:
   (->> (map mapify fns colls)
        (apply deep-merge)
        vals))
+
+(comment (subs "a" 1))
+
+(defn substr
+  "Like clojure.core/subs but prevents some exceptions when the `start` or `end` are out of bound.
+~~~klipse
+  (subs \"\" -2)
+~~~
+
+  "
+  ([s start] (subs s (max 0 (min start (count s)))))
+  ([s start end]
+   (let [start (max 0 (min start (count s)))
+         end (min (count s) end)]
+     (subs s start end))))
+
+

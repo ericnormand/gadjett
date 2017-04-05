@@ -11,6 +11,12 @@ Add this to your `project.clj` dependencies:
 
 [Live and Interactive documentation](http://viebel.github.io/gadjett/index.html)
 
+Generate the doc by running:
+
+```bash
+./generate-interactive-doc
+```
+
 ## API
 In order to use the `gadjett` macros, you have to include the `gadjett` namespace like this:
 
