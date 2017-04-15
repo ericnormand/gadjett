@@ -1,7 +1,13 @@
 echo "building the cache"
-rm -rf docs/cache-cljs 
-lumo -k docs/cache-cljs -c`lein classpath` -e "(require 'gadjett.all)"
+rm -rf docs/cache-cljs
+export cp=`lein with-profile codox classpath`
+# copy the analysis cache from klipse; we need it for core.async and core.match
+cp -r ~/prj/klipse/docs/cache-cljs docs/cache-cljs
+# remove gadjett from the cache; klipse might have cached an older version
+rm docs/cache-cljs/gadjett_SLASH_*
+lumo -k docs/cache-cljs -c $cp -e "(require 'gadjett.all)"
+
 echo "copying the sources"
 cp -r src docs/src
 echo "running 'lein codox'"
-lein codox
+lein with-profile codox codox

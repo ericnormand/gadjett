@@ -54,8 +54,8 @@ new cljs.core.Var(function(){return gadjett.core_fn.settings_BANG_;},new cljs.co
 gadjett.core_fn.add_event_and_filter = (function gadjett$core_fn$add_event_and_filter(timestamp_msec,events){
 var timeslot = new cljs.core.Keyword(null,"timeslot-function-calls-msec","timeslot-function-calls-msec",(189712759)).cljs$core$IFn$_invoke$arity$1(gadjett.core_fn.settings);
 return cljs.core.cons.call(null,timestamp_msec,cljs.core.take_while.call(null,((function (timeslot){
-return (function (p1__16_SHARP_){
-return (p1__16_SHARP_ > (timestamp_msec - timeslot));
+return (function (p1__18_SHARP_){
+return (p1__18_SHARP_ > (timestamp_msec - timeslot));
 });})(timeslot))
 ,events));
 }); return (

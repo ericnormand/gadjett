@@ -4,5 +4,6 @@
   (:require gadjett.collections
             gadjett.core-fn
             gadjett.io
-            gadjett.linear))
+            gadjett.linear
+            gadjett.async-utils))
 

@@ -801,3 +801,16 @@ Default settings:
      (subs s start end))))
 
 
+(defn select-keys-in-order
+  "Thanks [Jay Fields](http://blog.jayfields.com/2011/01/clojure-select-keys-select-values-and.html)"
+  [m keyseq]
+  (map m keyseq))
+
+(defn select-vals [map keyseq]
+  (vals (select-keys map keyseq)))
+
+(defn select-vals-in-order
+  "Thanks [Jay Fields](http://blog.jayfields.com/2011/01/clojure-select-keys-select-values-and.html)"
+  [map ks]
+  (reduce #(conj %1 (map %2)) [] ks))
+

@@ -1,29 +1,31 @@
-(defproject viebel/gadjett "0.4.3"
-  :description "Inspector tools for clojurescript"
+(defproject viebel/gadjett "0.5.0"
+  :description "Inspector tools for clojure[script]"
   :url "https://github.com/viebel/gadjett"
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
-                 [viebel/codox-klipse-theme "0.0.5"]
                  [org.clojure/clojurescript "1.9.227"]
-                 [org.clojure/test.check "0.9.0"]
-                 [com.velisco/herbert "0.7.0"]
-                 [figwheel-sidecar "0.5.6"]
-                 [midje "1.9.0-alpha6"]]
-  :plugins [[lein-cljsbuild "1.1.5"]
-            [lein-figwheel "0.5.0-6"]
-            [lein-codox "0.10.2"]
-            [lein-midje "3.2"]]
+                 [org.clojure/core.match "0.3.0-alpha4"]
+                 [org.clojure/core.async "0.3.442"]]
+  :profiles {:codox {:dependencies [[viebel/codox-klipse-theme "0.0.5"]]
+                     :plugins [[lein-codox "0.10.2"]]}
+             :dev {:dependencies [[midje "1.9.0-alpha6"]
+                                  [org.clojure/test.check "0.9.0"]
+                                  [com.velisco/herbert "0.7.0"]
+                                  [figwheel-sidecar "0.5.6"]]
+                   :plugins [[lein-cljsbuild "1.1.5"]
+                             [lein-figwheel "0.5.0-6"]
+                             [lein-midje "3.2"]]}}
   :figwheel {:server-port 2512}
   :source-paths ["src" "script" "try"]
   :codox {
-          :language :clojurescript
+                                        ; :language :clojurescript
           :source-uri "https://github.com/viebel/gadjett/blob/master/{filepath}#L{line}"
           :metadata {:doc/format :markdown}
           :source-paths ["src"]
           :output-path "docs"
           :themes [:default [:klipse {:klipse/external-libs  "src"
                                       :klipse/bundled-ns-ignore-regexp #"/gadjett\..*/"
-                                      :klipse/cached-macro-ns-regexp #"/gadjett\..*/"
-                                      :klipse/cached-ns-regexp #"/gadjett\..*/"                                      
+                                      :klipse/cached-macro-ns-regexp #"/gadjett\..*|cljs\..*/"
+                                      :klipse/cached-ns-regexp #"/gadjett\..*|cljs\..*/"
                                       :klipse/cached-ns-root "./cache-cljs"
                                       :klipse/require-statement "(ns test.gadjett
                                                          (:require
@@ -39,12 +41,12 @@
                                      :asset-path "js"
                                      :output-to "resources/public/js/main.js"
                                      :output-dir "resources/public/js"
-                                     ;:elide-asserts true
+                                        ;:elide-asserts true
                                      :verbose true}}
                :dev {
-                :source-paths ["src"]
-                :compiler {
-                           :output-to "resources/main.dev.js"
-                           :output-dir "resources/public/dev"
-                           :optimizations :none
-                           :pretty-print true}}}})
+                     :source-paths ["src"]
+                     :compiler {
+                                :output-to "resources/main.dev.js"
+                                :output-dir "resources/public/dev"
+                                :optimizations :none
+                                :pretty-print true}}}})
