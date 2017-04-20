@@ -1,4 +1,4 @@
-(defproject viebel/gadjett "0.5.0"
+(defproject viebel/gadjett "0.5.1"
   :description "Inspector tools for clojure[script]"
   :url "https://github.com/viebel/gadjett"
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
